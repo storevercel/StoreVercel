@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Productos - STORE VERCEL</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="/static/styles.css">
+  <style>
+    /* Estilos para el catálogo */
+    .catalog-container {
+      overflow-x: auto;
+      display: flex;
+      scroll-snap-type: x mandatory;
+      gap: 20px;
+      padding: 20px 0;
+      margin: 0 10px;
+    }
+    .iphone-item {
+      flex: 0 0 auto;
+      width: 200px;
+      scroll-snap-align: center;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+    .iphone-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    .iphone-color {
+      width: 100%;
+      height: 150px;
+      border-radius: 8px;
+      object-fit: cover;
+      background-size: cover;
+      background-position: center;
+    }
+    .section-title {
+      font-size: 2rem;
+      font-weight: 600;
+      color: #333;
+      margin: 2rem 0;
+      text-align: center;
+    }
+    /* Estilos para modales */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+    .modal.active {
+      display: flex;
+    }
+    .modal-content {
+      max-width: 90%;
+      width: 800px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      position: relative;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    .modal-content p {
+      margin-bottom: 15px;
+      font-size: 1rem;
+    }
+    .modal-title-large {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+    .price {
+      margin-left: 20px;
+    }
+    .modal-color {
+      height: 350px;
+      width: 200px;
+      object-fit: contain;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-radius: 8px;
+      margin: 0 auto;
+    }
+    .thumb-color {
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      border-radius: 4px;
+      transition: border 0.3s;
+      margin: 0 5px;
+      background-size: cover;
+      background-position: center;
+    }
+    .thumb-color.active {
+      border: 2px solid #007aff;
+    }
+    .color-btn {
+      margin: 5px;
+      padding: 8px 12px;
+      border: 1px solid #007aff;
+      border-radius: 4px;
+      background-color: #fff;
+      color: #007aff;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .color-btn.selected {
+      background-color: #007aff;
+      color: #fff;
+      font-weight: 600;
+    }
+    .option-card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 2px;
+      margin: 1px;
+      cursor: pointer;
+      transition: background-color 0.3s, border-color 0.3s;
+      width: fit-content;
+      display: inline-block;
+      white-space: nowrap;
+      box-sizing: border-box;
+      font-size: 1rem;
+    }
+    .option-card.selected {
+      background-color: #e7f3ff;
+      border-color: #007aff;
+    }
+    .memory-btn, .model-btn {
+      margin: 5px;
+      padding: 8px 12px;
+      border: 1px solid #007aff;
+      border-radius: 4px;
+      background-color: #fff;
+      color: #007aff;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .memory-btn.selected, .model-btn.selected {
+      background-color: #007aff;
+      color: #fff;
+      font-weight: 600;
+    }
+    .btn-custom {
+      background-color: #007aff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      margin: 5px;
+    }
+    .btn-custom:hover {
+      background-color: #005bb5;
+    }
+    .btn-outline-custom {
+      background-color: #fff;
+      color: #007aff;
+      border: 1px solid #007aff;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      margin: 5px;
+    }
+    .btn-outline-custom:hover {
+      background-color: #e7f3ff;
+    }
+    .specs-container {
+      max-height: 400px;
+      overflow-y: auto;
+      padding-right: 10px;
+      display: none;
+    }
+    .specs-container.expanded {
+      display: block;
+    }
+    .feature-card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #fff;
+      transition: transform 0.3s ease;
+    }
+    .feature-card:hover {
+      transform: scale(1.02);
+    }
+    .toggle-specs {
+      color: #007aff;
+      cursor: pointer;
+      font-weight: 600;
+      text-align: center;
+      display: block;
+      margin: 10px 0;
+    }
+    .content-wrapper.blurred {
+      filter: blur(5px);
+      opacity: 0.9;
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .col-md-5 {
+      flex: 0 0 35%;
+      max-width: 35%;
+    }
+    .col-md-7 {
+      flex: 0 0 60%;
+      max-width: 60%;
+    }
+    .thumbnail-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    @media (max-width: 768px) {
+      .col-md-5, .col-md-7 {
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+      .row {
+        flex-direction: column;
+      }
+      .modal-color {
+        width: 60%;
+        height: 300px;
+      }
+      .option-card {
+        width: auto;
+        max-width: 100%;
+        white-space: normal;
+      }
+      .modal-title-large {
+        font-size: 2rem;
+      }
+      .price {
+        margin-left: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="content-wrapper">
+    <div class="hamburger">
+      <div class="hamburger__container">
+        <div class="hamburger__inner"></div>
+        <div class="hamburger__hidden"></div>
+      </div>
+    </div>
+
+    <div class="top-right-buttons">
+      <button id="user-btn" aria-label="Perfil de usuario"><i class="fas fa-user"></i></button>
+      <button aria-label="Carrito de compras"><i class="fas fa-shopping-cart"></i></button>
+    </div>
+
+    <nav class="menu" aria-label="Main navigation">
+      <ul>
+        <li><a href="/">Inicio</a></li>
+        <li><a href="#" id="about-link">Acerca</a></li>
+        <li><a href="/productos">Productos</a></li>
+        <li><a href="#" id="contact-link">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <section class="container my-5">
+      <h2 class="section-title">Elige tu iPhone</h2>
+      <div class="catalog-container">
+        <div class="iphone-item" data-model="iPhone 16" data-modal="modal-iphone16">
+          <div class="iphone-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20pro2.png"></div>
+          <h5 class="mt-2">iPhone 16</h5>
+        </div>
+        <div class="iphone-item" data-model="iPhone 15" data-modal="modal-iphone15">
+          <div class="iphone-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20pro2.png"></div>
+          <h5 class="mt-2">iPhone 15</h5>
+        </div>
+        <div class="iphone-item" data-model="iPhone 14" data-modal="modal-iphone14">
+          <div class="iphone-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/iphone133.png"></div>
+          <h5 class="mt-2">iPhone 14</h5>
+        </div>
+        <div class="iphone-item" data-model="iPhone 13" data-modal="modal-iphone13">
+          <div class="iphone-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/iphone133.png"></div>
+          <h5 class="mt-2">iPhone 13</h5>
+        </div>
+      </div>
+    </section>
+
+    <section class="container my-5">
+      <h2 class="section-title">Tecnología Apple</h2>
+      <div class="catalog-container">
+        <div class="iphone-item" data-model="Mac Studio" data-modal="modal-macstudio">
+          <div class="iphone-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/mac%20studio3.png"></div>
+          <h5 class="mt-2">Mac Studio</h5>
+        </div>
+        <div class="iphone-item" data-model="MacBook" data-modal="modal-macbook">
+          <div class="iphone-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/macbook1.png"></div>
+          <h5 class="mt-2">MacBook</h5>
+        </div>
+        <div class="iphone-item" data-model="iPad" data-modal="modal-ipad">
+          <div class="iphone-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/ipad%2011%20pro3.png"></div>
+          <h5 class="mt-2">iPad</h5>
+        </div>
+        <div class="iphone-item" data-model="Apple Vision Pro" data-modal="modal-visionpro">
+          <div class="iphone-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/applevision.png"></div>
+          <h5 class="mt-2">Apple Vision Pro</h5>
+        </div>
+        <div class="iphone-item" data-model="Apple Watch Ultra" data-modal="modal-watchultra">
+          <div class="iphone-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/apple%20wacht%20ultra3.png"></div>
+          <h5 class="mt-2">Apple Watch Ultra</h5>
+        </div>
+      </div>
+    </section>
+
+    <div class="social-buttons">
+      <a href="https://instagram.com/storevercel" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://wa.me/+5492616258478" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+      <a href="mailto:storevercel@gmail.com" aria-label="Correo"><i class="fas fa-envelope"></i></a>
+    </div>
+
+    <footer>
+      <p>© 2025 Todos los derechos reservados.</p>
+      <p>Marca Registrada &trade; | Diseñado por STORE VERCEL</p>
+      <p>
+        <a href="#" id="privacy-link">Política de Privacidad</a> |
+        <a href="#" id="terms-link">Términos y Condiciones</a>
+      </p>
+    </footer>
+  </div>
+
+  <!-- Modal para iPhone 16 -->
+  <div class="modal" id="modal-iphone16">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Cerrar">&times;</button>
+      <div class="row">
+        <div class="col-md-5">
+          <div id="mainColor-iphone16" class="modal-color mb-3" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20pro.png"></div>
+          <div class="thumbnail-container">
+            <div class="thumb-color active" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20pro.png"></div>
+            <div class="thumb-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20pro1.png"></div>
+            <div class="thumb-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20pro2.png"></div>
+          </div>
+        </div>
+        <div class="col-md-7 details-container">
+          <div class="details-top mb-4">
+            <h6 class="modal-title-large">iPhone 16 <span class="price" id="price-iphone16">$1.300.000</span></h6>
+            <p><strong>Elección de Modelo:</strong></p>
+            <div class="d-flex flex-wrap">
+              <button class="model-btn selected" data-model="iPhone 16">iPhone 16</button>
+              <button class="model-btn" data-model="iPhone 16 Plus">iPhone 16 Plus</button>
+              <button class="model-btn" data-model="iPhone 16 Pro">iPhone 16 Pro</button>
+              <button class="model-btn" data-model="iPhone 16 Pro Max">iPhone 16 Pro Max</button>
+            </div>
+            <p><strong>Elección de Color:</strong> <span id="selected-color-iphone16">Blanco</span></p>
+            <div class="d-flex flex-wrap">
+              <button class="color-btn selected" data-color="Blanco">Blanco</button>
+              <button class="color-btn" data-color="Negro">Negro</button>
+              <button class="color-btn" data-color="Azul Ultramar">Azul Ultramar</button>
+              <button class="color-btn" data-color="Verde Azulado">Verde Azulado</button>
+              <button class="color-btn" data-color="Rosa">Rosa</button>
+            </div>
+            <p><strong>Elección de Cuotas:</strong></p>
+            <div class="option-card" data-option="3cuotas" id="cuotas-3-iphone16">3 cuotas: 15% descuento ($1.105.000)</div>
+            <div class="option-card" data-option="6cuotas" id="cuotas-6-iphone16">6 cuotas: 10% descuento ($1.170.000)</div>
+            <p><strong>Elección de Memoria:</strong></p>
+            <div class="d-flex flex-wrap">
+              <button class="memory-btn" data-memory="256GB">256GB</button>
+              <button class="memory-btn" data-memory="512GB">512GB</button>
+              <button class="memory-btn" data-memory="1T">1T</button>
+            </div>
+            <div class="text-center mt-3">
+              <button class="btn-custom">Comprar ahora</button>
+              <button class="btn-outline-custom">Añadir al carrito</button>
+            </div>
+          </div>
+          <span class="toggle-specs">Características del Producto</span>
+          <div class="specs-container">
+            <div class="feature-card"><h6>Pantalla</h6><p>6.1" Super Retina XDR (OLED), 2556 x 1179 píxeles (460 ppi). Brillo típico de 1,000 nits, pico de brillo de 1,600 nits (HDR) y 2,000 nits (en exteriores).</p></div>
+            <div class="feature-card"><h6>Chip</h6><p>A18 Bionic</p></div>
+            <div class="feature-card"><h6>CPU</h6><p>6 núcleos (2 de rendimiento + 4 de eficiencia)</p></div>
+            <div class="feature-card"><h6>GPU</h6><p>5 núcleos</p></div>
+            <div class="feature-card"><h6>Neural Engine</h6><p>16 núcleos</p></div>
+            <div class="feature-card"><h6>RAM</h6><p>6 GB</p></div>
+            <div class="feature-card"><h6>Almacenamiento</h6><p>128 GB, 256 GB, 512 GB</p></div>
+            <div class="feature-card"><h6>Cámaras Traseras</h6><p>Sistema de doble cámara: Principal 48 MP (ƒ/1.6, estabilización óptica por desplazamiento de sensor), Ultra Gran Angular 12 MP (ƒ/2.2)</p></div>
+            <div class="feature-card"><h6>Cámara Frontal</h6><p>12 MP, ƒ/1.9</p></div>
+            <div class="feature-card"><h6>Conectividad</h6><p>5G (sub-6 GHz), Wi-Fi 7, Bluetooth 5.3</p></div>
+            <div class="feature-card"><h6>Puertos</h6><p>USB-C</p></div>
+            <div class="feature-card"><h6>Diseño</h6><p>Frente de Ceramic Shield, parte posterior de vidrio con infusión de color, marco de aluminio. Resistencia al agua y al polvo (IP68).</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para iPhone 15 -->
+  <div class="modal" id="modal-iphone15">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Cerrar">&times;</button>
+      <div class="row">
+        <div class="col-md-5">
+          <div id="mainColor-iphone15" class="modal-color mb-3" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20protr.png"></div>
+          <div class="thumbnail-container">
+            <div class="thumb-color active" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20protr.png"></div>
+            <div class="thumb-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20protr1.png"></div>
+            <div class="thumb-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20pro2.png"></div>
+          </div>
+        </div>
+        <div class="col-md-7 details-container">
+          <div class="details-top mb-4">
+            <h6 class="modal-title-large">iPhone 15 <span class="price" id="price-iphone15">$1.100.000</span></h6>
+            <p><strong>Elección de Modelo:</strong></p>
+            <div class="d-flex flex-wrap">
+              <button class="model-btn selected" data-model="iPhone 15">iPhone 15</button>
+              <button class="model-btn" data-model="iPhone 15 Plus">iPhone 15 Plus</button>
+              <button class="model-btn" data-model="iPhone 15 Pro">iPhone 15 Pro</button>
+              <button class="model-btn" data-model="iPhone 15 Pro Max">iPhone 15 Pro Max</button>
+            </div>
+            <p><strong>Elección de Color:</strong> <span id="selected-color-iphone15">Rosa</span></p>
+            <div class="d-flex flex-wrap">
+              <button class="color-btn selected" data-color="Rosa">Rosa</button>
+              <button class="color-btn" data-color="Azul">Azul</button>
+              <button class="color-btn" data-color="Verde">Verde</button>
+              <button class="color-btn" data-color="Amarillo">Amarillo</button>
+              <button class="color-btn" data-color="Negro">Negro</button>
+            </div>
+            <p><strong>Elección de Cuotas:</strong></p>
+            <div class="option-card" data-option="3cuotas" id="cuotas-3-iphone15">3 cuotas: 15% descuento ($935.000)</div>
+            <div class="option-card" data-option="6cuotas" id="cuotas-6-iphone15">6 cuotas: 10% descuento ($990.000)</div>
+            <p><strong>Elección de Memoria:</strong></p>
+            <div class="d-flex flex-wrap">
+              <button class="memory-btn" data-memory="256GB">256GB</button>
+              <button class="memory-btn" data-memory="512GB">512GB</button>
+            </div>
+            <div class="text-center mt-3">
+              <button class="btn-custom">Comprar ahora</button>
+              <button class="btn-outline-custom">Añadir al carrito</button>
+            </div>
+          </div>
+          <span class="toggle-specs">Características del Producto</span>
+          <div class="specs-container">
+            <div class="feature-card"><h6>Pantalla</h6><p>6.1" Super Retina XDR (OLED) con Dynamic Island, 2556 x 1179 píxeles (460 ppi). Brillo típico de 1,000 nits, pico de brillo de 1,600 nits (HDR) y 2,000 nits (en exteriores).</p></div>
+            <div class="feature-card"><h6>Chip</h6><p>A16 Bionic</p></div>
+            <div class="feature-card"><h6>CPU</h6><p>6 núcleos (2 de rendimiento + 4 de eficiencia)</p></div>
+            <div class="feature-card"><h6>GPU</h6><p>5 núcleos</p></div>
+            <div class="feature-card"><h6>RAM</h6><p>6 GB</p></div>
+            <div class="feature-card"><h6>Almacenamiento</h6><p>128 GB, 256 GB, 512 GB</p></div>
+            <div class="feature-card"><h6>Cámaras Traseras</h6><p>Sistema de doble cámara: Principal 48 MP (ƒ/1.6), Ultra Gran Angular 12 MP (ƒ/2.4)</p></div>
+            <div class="feature-card"><h6>Cámara Frontal</h6><p>12 MP, ƒ/1.9</p></div>
+            <div class="feature-card"><h6>Conectividad</h6><p>5G, Wi-Fi 6, Bluetooth 5.3</p></div>
+            <div class="feature-card"><h6>Puertos</h6><p>USB-C</p></div>
+            <div class="feature-card"><h6>Diseño</h6><p>Frente de Ceramic Shield, parte posterior de vidrio con infusión de color, marco de aluminio. Resistencia al agua y al polvo (IP68).</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para iPhone 14 -->
+  <div class="modal" id="modal-iphone14">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Cerrar">&times;</button>
+      <div class="row">
+        <div class="col-md-5">
+          <div id="mainColor-iphone14" class="modal-color mb-3" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20prot.png"></div>
+          <div class="thumbnail-container">
+            <div class="thumb-color active" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20prot.png"></div>
+            <div class="thumb-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20prot1.png"></div>
+            <div class="thumb-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20pro2.png"></div>
+          </div>
+        </div>
+        <div class="col-md-7 details-container">
+          <div class="details-top mb-4">
+            <h6 class="modal-title-large">iPhone 14 <span class="price" id="price-iphone14">$700.000</span></h6>
+            <p><strong>Elección de Modelo:</strong></p>
+            <div class="d-flex flex-wrap">
+              <button class="model-btn selected" data-model="iPhone 14">iPhone 14</button>
+              <button class="model-btn" data-model="iPhone 14 Plus">iPhone 14 Plus</button>
+              <button class="model-btn" data-model="iPhone 14 Pro">iPhone 14 Pro</button>
+              <button class="model-btn" data-model="iPhone 14 Pro Max">iPhone 14 Pro Max</button>
+            </div>
+            <p><strong>Elección de Color:</strong> <span id="selected-color-iphone14">Azul</span></p>
+            <div class="d-flex flex-wrap">
+              <button class="color-btn selected" data-color="Azul">Azul</button>
+              <button class="color-btn" data-color="Púrpura">Púrpura</button>
+              <button class="color-btn" data-color="Blanco Estrella">Blanco Estrella</button>
+              <button class="color-btn" data-color="Negro Medianoche">Negro Medianoche</button>
+              <button class="color-btn" data-color="Amarillo">Amarillo</button>
+              <button class="color-btn" data-color="Rojo">Rojo</button>
+            </div>
+            <p><strong>Elección de Cuotas:</strong></p>
+            <div class="option-card" data-option="3cuotas" id="cuotas-3-iphone14">3 cuotas: 15% descuento ($595.000)</div>
+            <div class="option-card" data-option="6cuotas" id="cuotas-6-iphone14">6 cuotas: 10% descuento ($630.000)</div>
+            <p><strong>Elección de Memoria:</strong></p>
+            <div class="d-flex flex-wrap">
+              <button class="memory-btn selected" data-memory="256GB">256GB</button>
+              <button class="memory-btn" data-memory="512GB">512GB</button>
+            </div>
+            <div class="text-center mt-3">
+              <button class="btn-custom">Comprar ahora</button>
+              <button class="btn-outline-custom">Añadir al carrito</button>
+            </div>
+          </div>
+          <span class="toggle-specs">Características del Producto</span>
+          <div class="specs-container">
+            <div class="feature-card"><h6>Pantalla</h6><p>6.1" Super Retina XDR (OLED), 2532 x 1170 píxeles (460 ppi). Brillo típico de 800 nits, pico de brillo de 1,200 nits (HDR).</p></div>
+            <div class="feature-card"><h6>Chip</h6><p>A15 Bionic</p></div>
+            <div class="feature-card"><h6>CPU</h6><p>6 núcleos (2 de rendimiento + 4 de eficiencia)</p></div>
+            <div class="feature-card"><h6>GPU</h6><p>5 núcleos</p></div>
+            <div class="feature-card"><h6>RAM</h6><p>6 GB</p></div>
+            <div class="feature-card"><h6>Almacenamiento</h6><p>256 GB, 512 GB</p></div>
+            <div class="feature-card"><h6>Cámaras Traseras</h6><p>Sistema de doble cámara: Principal 12 MP (ƒ/1.5), Ultra Gran Angular 12 MP (ƒ/2.4)</p></div>
+            <div class="feature-card"><h6>Cámara Frontal</h6><p>12 MP, ƒ/1.9</p></div>
+            <div class="feature-card"><h6>Conectividad</h6><p>5G, Wi-Fi 6, Bluetooth 5.3</p></div>
+            <div class="feature-card"><h6>Puertos</h6><p>Lightning</p></div>
+            <div class="feature-card"><h6>Diseño</h6><p>Frente de Ceramic Shield, parte posterior de vidrio, marco de aluminio. Resistencia al agua y al polvo (IP68).</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para iPhone 13 -->
+  <div class="modal" id="modal-iphone13">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Cerrar">&times;</button>
+      <div class="row">
+        <div class="col-md-5">
+          <div id="mainColor-iphone13" class="modal-color mb-3" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/iphone13.png"></div>
+          <div class="thumbnail-container">
+            <div class="thumb-color active" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/iphone13.png"></div>
+            <div class="thumb-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/iphone131.png"></div>
+            <div class="thumb-color" data-url="hhttps://github.com/storevercel/imagenesstorevercel/blob/main/iphone133.png"></div>
+          </div>
+        </div>
+        <div class="col-md-7 details-container">
+          <div class="details-top mb-4">
+            <h6 class="modal-title-large">iPhone 13 <span class="price" id="price-iphone13">$700.000</span></h6>
+            <p><strong>Elección de Modelo:</strong></p>
+            <div class="d-flex flex-wrap">
+              <button class="model-btn selected" data-model="iPhone 13">iPhone 13</button>
+              <button class="model-btn" data-model="iPhone 13 Mini">iPhone 13 Mini</button>
+              <button class="model-btn" data-model="iPhone 13 Pro">iPhone 13 Pro</button>
+              <button class="model-btn" data-model="iPhone 13 Pro Max">iPhone 13 Pro Max</button>
+            </div>
+            <p><strong>Elección de Color:</strong> <span id="selected-color-iphone13">Rosa</span></p>
+            <div class="d-flex flex-wrap">
+              <button class="color-btn selected" data-color="Rosa">Rosa</button>
+              <button class="color-btn" data-color="Azul">Azul</button>
+              <button class="color-btn" data-color="Medianoche">Medianoche</button>
+              <button class="color-btn" data-color="Blanco Estrella">Blanco Estrella</button>
+              <button class="color-btn" data-color="Rojo">Rojo</button>
+            </div>
+            <p><strong>Elección de Cuotas:</strong></p>
+            <div class="option-card" data-option="3cuotas" id="cuotas-3-iphone13">3 cuotas: 15% descuento ($595.000)</div>
+            <div class="option-card" data-option="6cuotas" id="cuotas-6-iphone13">6 cuotas: 10% descuento ($630.000)</div>
+            <p><strong>Elección de Memoria:</strong></p>
+            <div class="d-flex flex-wrap">
+              <button class="memory-btn selected" data-memory="128GB">128GB</button>
+              <button class="memory-btn" data-memory="256GB">256GB</button>
+            </div>
+            <div class="text-center mt-3">
+              <button class="btn-custom">Comprar ahora</button>
+              <button class="btn-outline-custom">Añadir al carrito</button>
+            </div>
+          </div>
+          <span class="toggle-specs">Características del Producto</span>
+          <div class="specs-container">
+            <div class="feature-card"><h6>Pantalla</h6><p>6.1" Super Retina XDR (OLED), 2532 x 1170 píxeles (460 ppi). Brillo típico de 800 nits, pico de brillo de 1,200 nits (HDR).</p></div>
+            <div class="feature-card"><h6>Chip</h6><p>A15 Bionic</p></div>
+            <div class="feature-card"><h6>CPU</h6><p>6 núcleos (2 de rendimiento + 4 de eficiencia)</p></div>
+            <div class="feature-card"><h6>GPU</h6><p>4 núcleos</p></div>
+            <div class="feature-card"><h6>RAM</h6><p>4 GB</p></div>
+            <div class="feature-card"><h6>Almacenamiento</h6><p>128 GB, 256 GB</p></div>
+            <div class="feature-card"><h6>Cámaras Traseras</h6><p>Sistema de doble cámara: Principal 12 MP (ƒ/1.6), Ultra Gran Angular 12 MP (ƒ/2.4)</p></div>
+            <div class="feature-card"><h6>Cámara Frontal</h6><p>12 MP, ƒ/2.2</p></div>
+            <div class="feature-card"><h6>Conectividad</h6><p>5G, Wi-Fi 6, Bluetooth 5.0</p></div>
+            <div class="feature-card"><h6>Puertos</h6><p>Lightning</p></div>
+            <div class="feature-card"><h6>Diseño</h6><p>Frente de Ceramic Shield, parte posterior de vidrio, marco de aluminio. Resistencia al agua y al polvo (IP68).</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Mac Studio -->
+  <div class="modal" id="modal-macstudio">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Cerrar">&times;</button>
+      <div class="row">
+        <div class="col-md-5">
+          <div id="mainColor-macstudio" class="modal-color mb-3" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/mac%20studio2.png"></div>
+          <div class="thumbnail-container">
+            <div class="thumb-color active" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/mac%20studio2.png"></div>
+            <div class="thumb-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/mac%20studio1.png"></div>
+            <div class="thumb-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/mac%20studio.png"></div>
+          </div>
+        </div>
+        <div class="col-md-7 details-container">
+          <div class="details-top mb-4">
+            <h6 class="modal-title-large">Mac Studio <span class="price" id="price-macstudio">$2.000.000</span></h6>
+            <p><strong>Elección de Modelo:</strong></p>
+            <div class="d-flex flex-wrap">
+              <button class="model-btn selected" data-model="Mac Studio">Mac Studio</button>
+              <button class="model-btn" data-model="Mac Studio Max">Mac Studio Max</button>
+            </div>
+            <p><strong>Elección de Cuotas:</strong></p>
+            <div class="option-card" data-option="3cuotas" id="cuotas-3-macstudio">3 cuotas: 15% descuento ($1.700.000)</div>
+            <div class="option-card" data-option="6cuotas" id="cuotas-6-macstudio">6 cuotas: 10% descuento ($1.800.000)</div>
+            <p><strong>Elección de Memoria:</strong></p>
+            <div class="d-flex flex-wrap">
+              <button class="memory-btn selected" data-memory="512GB">512GB</button>
+              <button class="memory-btn" data-memory="1T">1T</button>
+            </div>
+            <div class="text-center mt-3">
+              <button class="btn-custom">Comprar ahora</button>
+              <button class="btn-outline-custom">Añadir al carrito</button>
+            </div>
+          </div>
+          <span class="toggle-specs">Características del Producto</span>
+          <div class="specs-container">
+            <div class="feature-card"><h6>Chip</h6><p>M2 Max o M2 Ultra</p></div>
+            <div class="feature-card"><h6>CPU</h6><p>Hasta 12 núcleos (M2 Max) o 24 núcleos (M2 Ultra)</p></div>
+            <div class="feature-card"><h6>GPU</h6><p>Hasta 38 núcleos (M2 Max) o 76 núcleos (M2 Ultra)</p></div>
+            <div class="feature-card"><h6>RAM</h6><p>Hasta 96 GB (M2 Max) o 192 GB (M2 Ultra)</p></div>
+            <div class="feature-card"><h6>Almacenamiento</h6><p>512 GB, 1 TB, hasta 8 TB</p></div>
+            <div class="feature-card"><h6>Conectividad</h6><p>Wi-Fi 6E, Bluetooth 5.3, 10Gb Ethernet</p></div>
+            <div class="feature-card"><h6>Puertos</h6><p>4x Thunderbolt 4, 2x USB-A, HDMI, 3.5mm audio</p></div>
+            <div class="feature-card"><h6>Diseño</h6><p>Aluminio compacto, diseño térmico avanzado</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para MacBook -->
+  <div class="modal" id="modal-macbook">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Cerrar">&times;</button>
+      <div class="row">
+        <div class="col-md-5">
+          <div id="mainColor-macbook" class="modal-color mb-3" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/macbook%20m4.png"></div>
+          <div class="thumbnail-container">
+            <div class="thumb-color active" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/macbook%20m4.png"></div>
+            <div class="thumb-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/macbook%20m41.png"></div>
+            <div class="thumb-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/macbook%20m42.png"></div>
+          </div>
+        </div>
+        <div class="col-md-7 details-container">
+          <div class="details-top mb-4">
+            <h6 class="modal-title-large">MacBook <span class="price" id="price-macbook">$1.500.000</span></h6>
+            <p><strong>Elección de Modelo:</strong></p>
+            <div class="d-flex flex-wrap">
+              <button class="model-btn selected" data-model="MacBook Air">MacBook Air</button>
+              <button class="model-btn" data-model="MacBook Pro">MacBook Pro</button>
+            </div>
+            <p><strong>Elección de Cuotas:</strong></p>
+            <div class="option-card" data-option="3cuotas" id="cuotas-3-macbook">3 cuotas: 15% descuento ($1.275.000)</div>
+            <div class="option-card" data-option="6cuotas" id="cuotas-6-macbook">6 cuotas: 10% descuento ($1.350.000)</div>
+            <p><strong>Elección de Memoria:</strong></p>
+            <div class="d-flex flex-wrap">
+              <button class="memory-btn selected" data-memory="256GB">256GB</button>
+              <button class="memory-btn" data-memory="512GB">512GB</button>
+              <button class="memory-btn" data-memory="1T">1T</button>
+            </div>
+            <div class="text-center mt-3">
+              <button class="btn-custom">Comprar ahora</button>
+              <button class="btn-outline-custom">Añadir al carrito</button>
+            </div>
+          </div>
+          <span class="toggle-specs">Características del Producto</span>
+          <div class="specs-container">
+            <div class="feature-card"><h6>Pantalla</h6><p>13.6" o 16" Liquid Retina, hasta 3024 x 1964 píxeles</p></div>
+            <div class="feature-card"><h6>Chip</h6><p>M2 o M3 (Air/Pro)</p></div>
+            <div class="feature-card"><h6>CPU</h6><p>Hasta 12 núcleos</p></div>
+            <div class="feature-card"><h6>GPU</h6><p>Hasta 40 núcleos</p></div>
+            <div class="feature-card"><h6>RAM</h6><p>Hasta 96 GB</p></div>
+            <div class="feature-card"><h6>Almacenamiento</h6><p>256 GB, 512 GB, hasta 8 TB</p></div>
+            <div class="feature-card"><h6>Conectividad</h6><p>Wi-Fi 6E, Bluetooth 5.3</p></div>
+            <div class="feature-card"><h6>Puertos</h6><p>Thunderbolt 4, MagSafe, 3.5mm audio</p></div>
+            <div class="feature-card"><h6>Diseño</h6><p>Aluminio, teclado Magic Keyboard</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para iPad -->
+  <div class="modal" id="modal-ipad">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Cerrar">&times;</button>
+      <div class="row">
+        <div class="col-md-5">
+          <div id="mainColor-ipad" class="modal-color mb-3" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/ipad%2011%20pro.png"></div>
+          <div class="thumbnail-container">
+            <div class="thumb-color active" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/ipad%2011%20pro.png"></div>
+            <div class="thumb-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/ipad%2011%20pro1.png"></div>
+            <div class="thumb-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/ipad%2011%20pro2.png"></div>
+          </div>
+        </div>
+        <div class="col-md-7 details-container">
+          <div class="details-top mb-4">
+            <h6 class="modal-title-large">iPad <span class="price" id="price-ipad">$800.000</span></h6>
+            <p><strong>Elección de Modelo:</strong></p>
+            <div class="d-flex flex-wrap">
+              <button class="model-btn selected" data-model="iPad">iPad</button>
+              <button class="model-btn" data-model="iPad Air">iPad Air</button>
+              <button class="model-btn" data-model="iPad Pro">iPad Pro</button>
+            </div>
+            <p><strong>Elección de Cuotas:</strong></p>
+            <div class="option-card" data-option="3cuotas" id="cuotas-3-ipad">3 cuotas: 15% descuento ($680.000)</div>
+            <div class="option-card" data-option="6cuotas" id="cuotas-6-ipad">6 cuotas: 10% descuento ($720.000)</div>
+            <p><strong>Elección de Memoria:</strong></p>
+            <div class="d-flex flex-wrap">
+              <button class="memory-btn selected" data-memory="64GB">64GB</button>
+              <button class="memory-btn" data-memory="256GB">256GB</button>
+              <button class="memory-btn" data-memory="512GB">512GB</button>
+            </div>
+            <div class="text-center mt-3">
+              <button class="btn-custom">Comprar ahora</button>
+              <button class="btn-outline-custom">Añadir al carrito</button>
+            </div>
+          </div>
+          <span class="toggle-specs">Características del Producto</span>
+          <div class="specs-container">
+            <div class="feature-card"><h6>Pantalla</h6><p>11" o 12.9" Liquid Retina, hasta 2732 x 2048 píxeles</p></div>
+            <div class="feature-card"><h6>Chip</h6><p>M2 o A14 Bionic</p></div>
+            <div class="feature-card"><h6>CPU</h6><p>Hasta 8 núcleos</p></div>
+            <div class="feature-card"><h6>GPU</h6><p>Hasta 10 núcleos</p></div>
+            <div class="feature-card"><h6>RAM</h6><p>Hasta 16 GB</p></div>
+            <div class="feature-card"><h6>Almacenamiento</h6><p>64 GB, 256 GB, 512 GB, hasta 2 TB</p></div>
+            <div class="feature-card"><h6>Conectividad</h6><p>5G, Wi-Fi 6E, Bluetooth 5.2</p></div>
+            <div class="feature-card"><h6>Puertos</h6><p>USB-C, Thunderbolt</p></div>
+            <div class="feature-card"><h6>Diseño</h6><p>Aluminio, compatible con Apple Pencil</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Apple Vision Pro -->
+  <div class="modal" id="modal-visionpro">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Cerrar">&times;</button>
+      <div class="row">
+        <div class="col-md-5">
+          <div id="mainColor-visionpro" class="modal-color mb-3" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/apple%20vision%20pro.png"></div>
+          <div class="thumbnail-container">
+            <div class="thumb-color active" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/apple%20vision%20pro.png"></div>
+            <div class="thumb-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/apple%20vision%20pro2.png"></div>
+            <div class="thumb-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/apple%20vision%20pro3.png"></div>
+          </div>
+        </div>
+        <div class="col-md-7 details-container">
+          <div class="details-top mb-4">
+            <h6 class="modal-title-large">Apple Vision Pro <span class="price" id="price-visionpro">$3.500.000</span></h6>
+            <p><strong>Elección de Modelo:</strong></p>
+            <div class="d-flex flex-wrap">
+              <button class="model-btn selected" data-model="Apple Vision Pro">Apple Vision Pro</button>
+            </div>
+            <p><strong>Elección de Cuotas:</strong></p>
+            <div class="option-card" data-option="3cuotas" id="cuotas-3-visionpro">3 cuotas: 15% descuento ($2.975.000)</div>
+            <div class="option-card" data-option="6cuotas" id="cuotas-6-visionpro">6 cuotas: 10% descuento ($3.150.000)</div>
+            <p><strong>Elección de Memoria:</strong></p>
+            <div class="d-flex flex-wrap">
+              <button class="memory-btn selected" data-memory="256GB">256GB</button>
+              <button class="memory-btn" data-memory="512GB">512GB</button>
+              <button class="memory-btn" data-memory="1T">1T</button>
+            </div>
+            <div class="text-center mt-3">
+              <button class="btn-custom">Comprar ahora</button>
+              <button class="btn-outline-custom">Añadir al carrito</button>
+            </div>
+          </div>
+          <span class="toggle-specs">Características del Producto</span>
+          <div class="specs-container">
+            <div class="feature-card"><h6>Pantalla</h6><p>Micro-OLED, 23 millones de píxeles por ojo</p></div>
+            <div class="feature-card"><h6>Chip</h6><p>M2 y R1</p></div>
+            <div class="feature-card"><h6>CPU</h6><p>8 núcleos (M2)</p></div>
+            <div class="feature-card"><h6>GPU</h6><p>10 núcleos (M2)</p></div>
+            <div class="feature-card"><h6>RAM</h6><p>16 GB</p></div>
+            <div class="feature-card"><h6>Almacenamiento</h6><p>256 GB, 512 GB, 1 TB</p></div>
+            <div class="feature-card"><h6>Conectividad</h6><p>Wi-Fi 6, Bluetooth 5.0</p></div>
+            <div class="feature-card"><h6>Sensores</h6><p>LiDAR, cámaras de alta resolución, seguimiento ocular</p></div>
+            <div class="feature-card"><h6>Diseño</h6><p>Vidrio laminado, marco de aluminio, ajuste personalizado</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Apple Watch Ultra -->
+  <div class="modal" id="modal-watchultra">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Cerrar">&times;</button>
+      <div class="row">
+        <div class="col-md-5">
+          <div id="mainColor-watchultra" class="modal-color mb-3" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/apple%20wacht%20ultra.png"></div>
+          <div class="thumbnail-container">
+            <div class="thumb-color active" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/apple%20wacht%20ultra.png"></div>
+            <div class="thumb-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/apple%20wacht%20ultra11.png"></div>
+            <div class="thumb-color" data-url="https://github.com/storevercel/imagenesstorevercel/blob/main/apple%20wacht%20ultra22.png"></div>
+          </div>
+        </div>
+        <div class="col-md-7 details-container">
+          <div class="details-top mb-4">
+            <h6 class="modal-title-large">Apple Watch Ultra <span class="price" id="price-watchultra">$900.000</span></h6>
+            <p><strong>Elección de Modelo:</strong></p>
+            <div class="d-flex flex-wrap">
+              <button class="model-btn selected" data-model="Apple Watch Ultra">Apple Watch Ultra</button>
+              <button class="model-btn" data-model="Apple Watch Ultra 2">Apple Watch Ultra 2</button>
+            </div>
+            <p><strong>Elección de Cuotas:</strong></p>
+            <div class="option-card" data-option="3cuotas" id="cuotas-3-watchultra">3 cuotas: 15% descuento ($765.000)</div>
+            <div class="option-card" data-option="6cuotas" id="cuotas-6-watchultra">6 cuotas: 10% descuento ($810.000)</div>
+            <p><strong>Elección de Memoria:</strong></p>
+            <div class="d-flex flex-wrap">
+              <button class="memory-btn selected" data-memory="64GB">64GB</button>
+            </div>
+            <div class="text-center mt-3">
+              <button class="btn-custom">Comprar ahora</button>
+              <button class="btn-outline-custom">Añadir al carrito</button>
+            </div>
+          </div>
+          <span class="toggle-specs">Características del Producto</span>
+          <div class="specs-container">
+            <div class="feature-card"><h6>Pantalla</h6><p>1.92" Retina, 502 x 410 píxeles, hasta 3000 nits</p></div>
+            <div class="feature-card"><h6>Chip</h6><p>S9 SiP</p></div>
+            <div class="feature-card"><h6>CPU</h6><p>Dual-core</p></div>
+            <div class="feature-card"><h6>Almacenamiento</h6><p>64 GB</p></div>
+            <div class="feature-card"><h6>Conectividad</h6><p>5G, Wi-Fi, Bluetooth 5.3, GPS</p></div>
+            <div class="feature-card"><h6>Sensores</h6><p>Pulsómetro, oxímetro, altímetro, brújula</p></div>
+            <div class="feature-card"><h6>Diseño</h6><p>Titanio, resistencia al agua hasta 100 m</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Login -->
+  <div class="modal" id="login-modal">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Cerrar">&times;</button>
+      <h2>Iniciar Sesión</h2>
+      <form class="login-form">
+        <input type="text" placeholder="Usuario" required>
+        <input type="password" placeholder="Contraseña" required>
+        <button type="submit">Iniciar Sesión</button>
+        <a href="/registro" class="create-account" id="create-account-btn">Crear cuenta</a>
+        <button type="button" class="google-login">
+          <i class="fab fa-google"></i> Iniciar con Google
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal para About -->
+  <div class="modal" id="about-modal">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Cerrar">&times;</button>
+      <h2>Acerca de STORE VERCEL</h2>
+      <h3><i class="fas fa-mobile-alt"></i> Nuestra Historia</h3>
+      <p>En STORE VERCEL llevamos más de 5 años conectando a nuestros clientes con lo mejor de la tecnología. Comenzamos ofreciendo una amplia gama de productos electrónicos, y con el tiempo nos especializamos en lo que mejor sabemos hacer: la venta de iPhones y productos Apple, 100% originales y cuidadosamente seleccionados.</p>
+      <h3><i class="fas fa-ship"></i> Importación Marítima Propia, Autonomía Total</h3>
+      <p>Operamos con nuestra propia importadora de tecnología, gestionando directamente la logística internacional por vía marítima. Esto nos brinda control absoluto sobre cada etapa del proceso: desde la adquisición en origen hasta la llegada a nuestro centro de distribución. Sin intermediarios, sin terceros. Cada producto que ofrecemos fue seleccionado, embarcado y validado por nosotros.</p>
+      <h3><i class="fas fa-dollar-sign"></i> Precios Imbatibles y Promociones Reales</h3>
+      <p>Gracias a nuestro modelo de importación directa, en STORE VERCEL ofrecemos los mejores precios del mercado y promociones exclusivas que se actualizan constantemente. Sin sobreprecios, sin letra chica. Lo que ves es lo que obtenés.</p>
+      <h3><i class="fas fa-shield-alt"></i> Garantía que Respaldamos</h3>
+      <p>Todos nuestros productos cuentan con garantías reales y transparentes, respaldadas por nuestra experiencia y compromiso. Porque entendemos que comprar tecnología es una inversión, y queremos que la hagas con total confianza.</p>
+      <h3><i class="fas fa-users"></i> Equipo Especializado</h3>
+      <p>Nuestro equipo está formado por especialistas en tecnología Apple, capacitados para asesorarte en cada compra y ayudarte a elegir el dispositivo ideal según tus necesidades. No vendemos productos: ofrecemos soluciones.</p>
+      <h3><i class="fas fa-check-circle"></i> Control de Calidad</h3>
+      <p>Cada unidad pasa por un proceso de validación técnica y estética, asegurando que cumpla con nuestros estándares antes de llegar a tus manos. Solo comercializamos dispositivos que cumplen con nuestras exigencias de calidad y autenticidad.</p>
+      <h3><i class="fas fa-lock"></i> Seguridad en la Compra</h3>
+      <p>Tu compra está protegida. Contamos con métodos de pago seguros y opciones flexibles para que accedas a tu producto Apple sin complicaciones. Además, nuestro sitio web está cifrado y validado para garantizar una experiencia confiable.</p>
+      <h3><i class="fas fa-headset"></i> Atención Postventa</h3>
+      <p>Nuestro compromiso no termina con la venta. Brindamos asesoramiento personalizado y soporte postventa, porque queremos que tu experiencia sea completa, segura y sin sorpresas.</p>
+    </div>
+  </div>
+
+  <!-- Modal para Privacy Policy -->
+  <div class="modal" id="privacy-modal">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Cerrar">&times;</button>
+      <h2>Política de Privacidad</h2>
+      <p><strong>Aceptación de la Política de Privacidad</strong></p>
+      <p>Al seleccionar la opción "Acepto la Política de Privacidad", usted confirma que ha leído, comprendido y acepta las prácticas descritas en la Política de Privacidad de STORE VERCEL, una compañía con seis años de trayectoria en la importación y venta de productos Apple originales, comprometida con la protección y el manejo responsable de los datos personales de sus clientes y usuarios.</p>
+      <p>En STORE VERCEL, reconocemos la importancia de salvaguardar su información personal y nos comprometemos a cumplir con las leyes y regulaciones vigentes en materia de protección de datos. Nuestra Política de Privacidad detalla cómo recopilamos, procesamos, almacenamos y protegemos su información personal, incluyendo datos proporcionados al registrarse en nuestro sitio web, realizar una compra, solicitar información o interactuar con nuestros servicios, ya sea en línea o en nuestras tiendas físicas.</p>
+      <p>Los datos recopilados, como su nombre, dirección, correo electrónico, número de teléfono y detalles de pago, se utilizan exclusivamente para procesar sus pedidos, gestionar entregas (incluyendo envíos marítimos a puertos designados), ofrecer soporte al cliente, personalizar su experiencia y, en caso de que así lo autorice, enviarle comunicaciones comerciales sobre productos, promociones o servicios relacionados. Garantizamos que su información no será compartida con terceros, salvo con socios logísticos o proveedores de servicios estrictamente necesarios para cumplir con nuestras obligaciones contractuales, y siempre bajo acuerdos que aseguren la confidencialidad.</p>
+      <p>Implementamos medidas de seguridad técnicas y organizativas para proteger sus datos contra accesos no autorizados, pérdidas o alteraciones. Además, usted tiene derecho a acceder, rectificar, actualizar o solicitar la eliminación de sus datos personales en cualquier momento, conforme a la normativa aplicable, contactándonos a través de nuestros canales oficiales.</p>
+      <p>Nos reservamos el derecho de actualizar esta Política de Privacidad para adaptarnos a cambios legales, regulatorios o mejoras en nuestras prácticas de manejo de datos. Cualquier cambio será notificado a través de nuestro sitio web o por correo electrónico, y el uso continuado de nuestros servicios implicará la aceptación de dichas actualizaciones. Le recomendamos revisar este documento periódicamente.</p>
+      <p>Si no está de acuerdo con las prácticas descritas en esta Política de Privacidad, le pedimos abstenerse de utilizar nuestros servicios o proporcionar su información personal. Para cualquier duda o solicitud relacionada con sus datos, nuestro equipo de atención al cliente está disponible a través de los canales oficiales indicados en nuestro sitio web.</p>
+    </div>
+  </div>
+
+  <!-- Modal para Terms and Conditions -->
+  <div class="modal" id="terms-modal">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Cerrar">&times;</button>
+      <h2>Términos y Condiciones</h2>
+      <p><strong>Aceptación de los Términos y Condiciones</strong></p>
+      <p>Al seleccionar la opción "Acepto los Términos y Condiciones", usted confirma que ha leído, comprendido y acepta regirse por los Términos y Condiciones establecidos por STORE VERCEL, una compañía con seis años de experiencia en la importación y comercialización de productos Apple 100% originales. Este acuerdo regula el uso de nuestro sitio web, plataformas digitales, servicios asociados y la adquisición de productos tecnológicos importados directamente por nuestra empresa, garantizando autenticidad, calidad y confianza en cada transacción.</p>
+      <p>Los presentes Términos y Condiciones constituyen un contrato legalmente vinculante entre usted, en calidad de usuario o cliente, y STORE VERCEL. Al realizar una compra, ya sea a través de nuestra plataforma en línea, tiendas físicas o cualquier canal oficial, usted se compromete a cumplir con las disposiciones aquí establecidas, que incluyen, entre otros, las políticas de compra, métodos de pago, plazos y condiciones de entrega, garantías, devoluciones y responsabilidades derivadas del uso de nuestros productos.</p>
+      <p>Como importadora autorizada, STORE VERCEL asegura que todos los productos Apple comercializados cumplen con los estándares de calidad y autenticidad establecidos por el fabricante. Nos comprometemos a entregar los productos en las condiciones acordadas, utilizando nuestros servicios logísticos propios o socios estratégicos de confianza. Para envíos internacionales, ofrecemos opciones como transporte marítimo, garantizando que los productos lleguen al puerto designado o a la dirección especificada de manera segura y en los plazos establecidos.</p>
+      <p>Nos reservamos el derecho de modificar o actualizar estos Términos y Condiciones en cualquier momento para reflejar cambios en la legislación, mejoras en nuestros procesos o adaptaciones a nuevas necesidades comerciales. Cualquier modificación será comunicada a través de nuestro sitio web, correo electrónico u otros canales oficiales, y el uso continuado de nuestros servicios implicará la aceptación de dichos cambios. Le recomendamos revisar periódicamente este documento para mantenerse informado.</p>
+      <p>En caso de no estar de acuerdo con alguna de las disposiciones aquí establecidas, le solicitamos abstenerse de utilizar nuestros servicios o realizar compras en nuestra plataforma. Para consultas, aclaraciones o soporte, puede contactarnos a través de nuestros canales oficiales de atención al cliente, disponibles en nuestro sitio web.</p>
+    </div>
+  </div>
+
+  <!-- Modal para Contact -->
+  <div class="modal" id="contact-modal">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Cerrar">&times;</button>
+      <h2>Contáctanos</h2>
+      <p>Elige una opción para ponerte en contacto...</p>
+      <div class="contact-options">
+        <a href="https://instagram.com/storevercel" target="_blank" class="contact-option">
+          <i class="fab fa-instagram"></i>
+          <span>Instagram</span>
+        </a>
+        <a href="https://wa.me/+5492616258478" target="_blank" class="contact-option">
+          <i class="fab fa-whatsapp"></i>
+          <span>WhatsApp</span>
+        </a>
+        <a href="mailto:storevercel@gmail.com" class="contact-option">
+          <i class="fas fa-envelope"></i>
+          <span>Correo Electrónico</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/main.js"></script>
+</body>
+</html>

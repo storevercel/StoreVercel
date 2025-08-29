@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Web Optimizada para Celulares</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="/static/styles.css">
+  <style>
+    /* Estilos para el modal de contacto */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal.active {
+      display: flex;
+    }
+    .modal-content {
+      max-width: 700px;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      position: relative;
+      max-height: 80vh;
+      overflow-y: auto;
+      text-align: center;
+    }
+    .modal-content p {
+      margin-bottom: 15px;
+    }
+    .modal-content h3 {
+      margin-top: 20px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .contact-options {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .contact-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .contact-option i {
+      font-size: 48px;
+      color: #007aff;
+    }
+    .contact-option span {
+      font-size: 16px;
+      font-weight: 500;
+      color: #333;
+    }
+    .contact-option a {
+      text-decoration: none;
+    }
+    .contact-option a:hover i {
+      color: #005bb5;
+    }
+    /* Estilos para botones sociales */
+    .social-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 20px 0;
+    }
+    .social-buttons a {
+      font-size: 24px;
+      color: #007aff;
+      text-decoration: none;
+    }
+    .social-buttons a:hover {
+      color: #005bb5;
+    }
+  </style>
+</head>
+<body>
+  <div class="content-wrapper">
+    <div class="hamburger">
+      <div class="hamburger__container">
+        <div class="hamburger__inner"></div>
+        <div class="hamburger__hidden"></div>
+      </div>
+    </div>
+
+    <div class="top-right-buttons">
+      <button id="user-btn" aria-label="Perfil de usuario"><i class="fas fa-user"></i></button>
+      <button aria-label="Carrito de compras"><i class="fas fa-shopping-cart"></i></button>
+    </div>
+
+    <nav class="menu" aria-label="Main navigation">
+      <ul>
+        <li><a href="/">Inicio</a></li>
+        <li><a href="#" id="about-link">Acerca</a></li>
+        <li><a href="/productos">Productos</a></li>
+        <li><a href="#" id="contact-link">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <main class="tiles">
+      <a class="tile" href="#">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/216995/1.jpg" alt="Producto 1" loading="lazy">
+        <div class="details">
+          <span class="title">iPhone Celulares</span>
+          <span class="info">Últimos modelos, mejores precios del país.
+Ofrecemos iPhones originales con garantía, promociones reales y entrega inmediata. Sin vueltas, sin letra chica.</span>
+        </div>
+      </a>
+      <a class="tile" href="#">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/216995/2.jpg" alt="Producto 2" loading="lazy">
+        <div class="details">
+          <span class="title">Productos Apple</span>
+          <span class="info">iPads, MacBooks, AirPods y accesorios premium.
+Cada producto es validado técnicamente y seleccionado por nuestro equipo. Vendemos calidad, no catálogo.</span>
+        </div>
+      </a>
+      <a class="tile" href="#">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/216995/3.jpg" alt="Producto 3" loading="lazy">
+        <div class="details">
+          <span class="title">Asesoría y Garantía</span>
+          <span class="info">6 años de experiencia, atención personalizada.
+Te acompañamos antes, durante y después de la compra. Nuestra garantía es clara, directa y respaldada por conocimiento técnico real.</span>
+        </div>
+      </a>
+      <a class="tile" href="#">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/216995/4.jpg" alt="Producto 4" loading="lazy">
+        <div class="details">
+          <span class="title">Importación Propia</span>
+          <span class="info">Logística marítima privada, sin intermediarios.
+Creamos nuestra propia importadora tras años de experiencia. Controlamos cada etapa: selección, embarque, validación y entrega.</span>
+        </div>
+      </a>
+    </main>
+
+    <section class="description">
+      <h2>Por qué elegir iPhone</h2>
+      <p>Descubre lo mejor de Apple con el iPhone: un diseño elegante, un ecosistema perfectamente integrado y un rendimiento inigualable. Cada detalle, desde la cámara de calidad profesional hasta la batería de larga duración, está diseñado para elevar tu experiencia diaria. <strong>“Innovación que inspira, tecnología que conecta.”</strong></p>
+      
+      <h2>Seguridad y productividad sin igual</h2>
+      <p>Con iPhone, tu seguridad y productividad están garantizadas. Face ID y el cifrado avanzado protegen tus datos como nunca antes, mientras que las herramientas de trabajo como iCloud y la integración con Mac hacen que todo fluya sin esfuerzo. <strong>“Tu privacidad, nuestra prioridad. Tu trabajo, nuestro enfoque.”</strong></p>
+    </section>
+
+    <div class="social-buttons">
+      <a href="https://instagram.com/storevercel" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://wa.me/+5492616258478" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+      <a href="mailto:storevercel@gmail.com" aria-label="Correo"><i class="fas fa-envelope"></i></a>
+    </div>
+
+    <footer>
+      <p>© 2025 Todos los derechos reservados.</p>
+      <p>Marca Registrada &trade; | Diseñado por STORE VERCEL</p>
+      <p>
+        <a href="#" id="privacy-link">Política de Privacidad</a> | 
+        <a href="#" id="terms-link">Términos y Condiciones</a>
+      </p>
+    </footer>
+  </div>
+
+  <!-- Modal for Login -->
+  <div class="modal" id="login-modal">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Cerrar">&times;</button>
+      <h2>Iniciar Sesión</h2>
+      <form class="login-form">
+        <input type="text" placeholder="Usuario" required>
+        <input type="password" placeholder="Contraseña" required>
+        <button type="submit">Iniciar Sesión</button>
+        <a href="/registro" class="create-account" id="create-account-btn">Crear cuenta</a>
+        <button type="button" class="google-login">
+          <i class="fab fa-google"></i> Iniciar con Google
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal for About -->
+  <div class="modal about-modal" id="about-modal">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Cerrar">&times;</button>
+      <h2>Acerca de STORE VERCEL</h2>
+      <h3><i class="fas fa-mobile-alt"></i> Nuestra Historia</h3>
+      <p>En STORE VERCEL llevamos más de 5 años conectando a nuestros clientes con lo mejor de la tecnología. Comenzamos ofreciendo una amplia gama de productos electrónicos, y con el tiempo nos especializamos en lo que mejor sabemos hacer: la venta de iPhones y productos Apple, 100% originales y cuidadosamente seleccionados.</p>
+      <h3><i class="fas fa-ship"></i> Importación Marítima Propia, Autonomía Total</h3>
+      <p>Operamos con nuestra propia importadora de tecnología, gestionando directamente la logística internacional por vía marítima. Esto nos brinda control absoluto sobre cada etapa del proceso: desde la adquisición en origen hasta la llegada a nuestro centro de distribución. Sin intermediarios, sin terceros. Cada producto que ofrecemos fue seleccionado, embarcado y validado por nosotros.</p>
+      <h3><i class="fas fa-dollar-sign"></i> Precios Imbatibles y Promociones Reales</h3>
+      <p>Gracias a nuestro modelo de importación directa, en STORE VERCEL ofrecemos los mejores precios del mercado y promociones exclusivas que se actualizan constantemente. Sin sobreprecios, sin letra chica. Lo que ves es lo que obtenés.</p>
+      <h3><i class="fas fa-shield-alt"></i> Garantía que Respaldamos</h3>
+      <p>Todos nuestros productos cuentan con garantías reales y transparentes, respaldadas por nuestra experiencia y compromiso. Porque entendemos que comprar tecnología es una inversión, y queremos que la hagas con total confianza.</p>
+      <h3><i class="fas fa-users"></i> Equipo Especializado</h3>
+      <p>Nuestro equipo está formado por especialistas en tecnología Apple, capacitados para asesorarte en cada compra y ayudarte a elegir el dispositivo ideal según tus necesidades. No vendemos productos: ofrecemos soluciones.</p>
+      <h3><i class="fas fa-check-circle"></i> Control de Calidad</h3>
+      <p>Cada unidad pasa por un proceso de validación técnica y estética, asegurando que cumpla con nuestros estándares antes de llegar a tus manos. Solo comercializamos dispositivos que cumplen con nuestras exigencias de calidad y autenticidad.</p>
+      <h3><i class="fas fa-lock"></i> Seguridad en la Compra</h3>
+      <p>Tu compra está protegida. Contamos con métodos de pago seguros y opciones flexibles para que accedas a tu producto Apple sin complicaciones. Además, nuestro sitio web está cifrado y validado para garantizar una experiencia confiable.</p>
+      <h3><i class="fas fa-headset"></i> Atención Postventa</h3>
+      <p>Nuestro compromiso no termina con la venta. Brindamos asesoramiento personalizado y soporte postventa, porque queremos que tu experiencia sea completa, segura y sin sorpresas.</p>
+    </div>
+  </div>
+
+  <!-- Modal for Privacy Policy -->
+  <div class="modal" id="privacy-modal">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Cerrar">&times;</button>
+      <h2>Política de Privacidad</h2>
+      <p>En STORE VERCEL, nos comprometemos a proteger tu privacidad. Recopilamos información personal como nombre, correo electrónico y datos de contacto únicamente para procesar pedidos y mejorar tu experiencia. Utilizamos tecnologías como el cifrado para garantizar la seguridad de tus datos.</p>
+      <p>No compartimos tu información con terceros, salvo que sea necesario para cumplir con obligaciones legales o procesar transacciones. Puedes solicitar acceder, modificar o eliminar tus datos en cualquier momento contactándonos. Nos esforzamos por cumplir con las normativas de protección de datos aplicables.</p>
+      <p>Si tienes alguna pregunta sobre cómo manejamos tu información, contáctanos a través de nuestro formulario de contacto o en nuestras redes sociales.</p>
+    </div>
+  </div>
+
+  <!-- Modal for Terms and Conditions -->
+  <div class="modal" id="terms-modal">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Cerrar">&times;</button>
+      <h2>Términos y Condiciones</h2>
+      <p>Al utilizar los servicios de STORE VERCEL, aceptas cumplir con estos términos. Nuestros productos y servicios están sujetos a disponibilidad y pueden variar sin previo aviso. Los usuarios son responsables de proporcionar información precisa al realizar compras.</p>
+      <p>Nos reservamos el derecho de modificar precios, productos o servicios en cualquier momento. No nos hacemos responsables por daños derivados del uso indebido de nuestros productos. Todas las compras están sujetas a nuestras políticas de devolución y garantía.</p>
+      <p>Para resolver cualquier disputa, contáctanos directamente. Estos términos se rigen por las leyes aplicables en Argentina.</p>
+    </div>
+  </div>
+
+  <!-- Modal for Contact -->
+  <div class="modal" id="contact-modal">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Cerrar">&times;</button>
+      <h2>Contáctanos</h2>
+      <p>Elige una opción para ponerte en contacto con nosotros:</p>
+      <div class="contact-options">
+        <a href="https://instagram.com/storevercel" target="_blank" class="contact-option">
+          <i class="fab fa-instagram"></i>
+          <span>Instagram</span>
+        </a>
+        <a href="https://wa.me/+5492616258478" target="_blank" class="contact-option">
+          <i class="fab fa-whatsapp"></i>
+          <span>WhatsApp</span>
+        </a>
+        <a href="mailto:storevercel@gmail.com" class="contact-option">
+          <i class="fas fa-envelope"></i>
+          <span>Correo Electrónico</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/main.js"></script>
+</body>
+</html>

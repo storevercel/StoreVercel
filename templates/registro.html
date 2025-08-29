@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Crear Cuenta - STORE VERCEL</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="/static/styles.css">
+  <style>
+    /* Estilos adicionales para mejorar el profesionalismo */
+    .register-form {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .form-section {
+      margin-bottom: 30px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 20px;
+    }
+    .form-section h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 15px;
+    }
+    .security-note {
+      background-color: #f8f9fa;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .security-note i {
+      color: #007aff;
+      font-size: 20px;
+    }
+    .policies {
+      font-size: 14px;
+      color: #666;
+      margin-top: 20px;
+    }
+    .policies label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .policies a {
+      color: #007aff;
+      text-decoration: none;
+    }
+    .policies a:hover {
+      text-decoration: underline;
+    }
+    .submit-btn {
+      background-color: #007aff;
+      color: #fff;
+      padding: 15px;
+      border: none;
+      border-radius: 5px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      width: 100%;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .submit-btn.enabled {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .submit-btn:hover.enabled {
+      background-color: #005bb5;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal.active {
+      display: flex;
+    }
+    .modal-content {
+      max-width: 700px;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      position: relative;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    .modal-content p {
+      margin-bottom: 15px;
+    }
+    .modal-content h3 {
+      margin-top: 20px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    /* Estilos para validación visual */
+    .card-field, .password-field {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 8px;
+    }
+    .card-field.valid, .password-field.valid {
+      border-color: #28a745;
+    }
+    .card-field.invalid, .password-field.invalid {
+      border-color: #dc3545;
+    }
+    /* Reducir ancho de campos específicos */
+    #card-expiry, #card-cvc {
+      width: 120px;
+    }
+    /* Ajustar ancho de número de tarjeta para espacios */
+    #card-number {
+      width: 250px;
+    }
+    /* Efecto de desenfoque */
+    .content-wrapper.blurred {
+      filter: blur(5px);
+    }
+    /* Estilo para el contenedor del formulario */
+    .register-modal {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="content-wrapper">
+    <div class="register-modal" id="register-modal">
+      <button class="close-btn" aria-label="Cerrar" onclick="window.location.href='/'">&times;</button>
+      <h2>Crear Cuenta</h2>
+      <form class="register-form" id="register-form">
+        <!-- Sección 1: Datos Personales -->
+        <div class="form-section">
+          <h3>Datos Personales</h3>
+          <div class="form-group">
+            <label for="username">Nombre de Usuario</label>
+            <input type="text" id="username" name="username" placeholder="Ej. juanperez123" required>
+          </div>
+          <div class="form-group">
+            <label for="nombres">Nombres</label>
+            <input type="text" id="nombres" name="nombres" placeholder="Ej. Juan Ignacio" required>
+          </div>
+          <div class="form-group">
+            <label for="apellidos">Apellidos</label>
+            <input type="text" id="apellidos" name="apellidos" placeholder="Ej. Pérez González" required>
+          </div>
+          <div class="form-group">
+            <label for="fecha-nacimiento">Fecha de Nacimiento</label>
+            <input type="date" id="fecha-nacimiento" name="fecha-nacimiento" required>
+          </div>
+          <div class="form-group">
+            <label for="dni">DNI</label>
+            <input type="text" id="dni" name="dni" placeholder="Ej. 12345678" required>
+          </div>
+        </div>
+
+        <!-- Sección 2: Datos de Contacto -->
+        <div class="form-section">
+          <h3>Datos de Contacto</h3>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="tu@ejemplo.com" required>
+          </div>
+          <div class="form-group">
+            <label for="contrasena">Contraseña</label>
+            <input type="password" id="contrasena" name="contrasena" class="password-field" placeholder="Ej. Contraseña123" required>
+          </div>
+          <div class="form-group">
+            <label for="repetir-contrasena">Repetir Contraseña</label>
+            <input type="password" id="repetir-contrasena" name="repetir-contrasena" class="password-field" placeholder="Repite tu contraseña" required>
+          </div>
+          <div class="form-group">
+            <label for="celular">Celular</label>
+            <input type="tel" id="celular" name="celular" placeholder="Ej. +54 9 11 1234 5678" required>
+          </div>
+          <div class="form-group">
+            <label for="telefono">Teléfono</label>
+            <input type="tel" id="telefono" name="telefono" placeholder="Ej. +54 11 1234 5678">
+          </div>
+        </div>
+
+        <!-- Sección 3: Dirección -->
+        <div class="form-section">
+          <h3>Dirección</h3>
+          <div class="form-group">
+            <label for="pais">País</label>
+            <select id="pais" name="pais" required>
+              <option value="" disabled selected>Selecciona un país</option>
+              <option value="Argentina">Argentina</option>
+              <option value="Chile">Chile</option>
+              <option value="Brasil">Brasil</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="provincia">Provincia</label>
+            <input type="text" id="provincia" name="provincia" placeholder="Ej. Buenos Aires" required>
+          </div>
+          <div class="form-group">
+            <label for="codigo-postal">Código Postal</label>
+            <input type="text" id="codigo-postal" name="codigo-postal" placeholder="Ej. 1234" required>
+          </div>
+          <div class="form-group">
+            <label for="calle">Calle</label>
+            <input type="text" id="calle" name="calle" placeholder="Ej. Av. Siempre Viva" required>
+          </div>
+          <div class="form-group">
+            <label for="numero">Número</label>
+            <input type="text" id="numero" name="numero" placeholder="Ej. 123" required>
+          </div>
+        </div>
+
+        <!-- Sección 4: Datos de Pago -->
+        <div class="form-section">
+          <h3>Datos de Pago</h3>
+          <div class="security-note">
+            <i class="fas fa-lock"></i>
+            <span>Tus datos de pago están protegidos con cifrado SSL de 256 bits. No almacenamos información sensible de tarjetas.</span>
+          </div>
+          <fieldset>
+            <legend>Datos de la Tarjeta</legend>
+            <div class="form-group">
+              <label for="card-number">Número de Tarjeta</label>
+              <input type="text" id="card-number" name="card-number" class="card-field" placeholder="Ej. 1234 5678 9012 3456" maxlength="19" required>
+              <div class="card-logos">
+                <i class="fab fa-cc-visa" title="Visa"></i>
+                <i class="fab fa-cc-mastercard" title="MasterCard"></i>
+                <i class="fab fa-cc-amex" title="American Express"></i>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="card-name">Nombre y Apellido (como aparece en la tarjeta)</label>
+              <input type="text" id="card-name" name="card-name" class="card-field" placeholder="Ej. Juan Pérez" required>
+            </div>
+            <div class="form-group">
+              <label for="card-expiry">Fecha de Vencimiento</label>
+              <input type="text" id="card-expiry" name="card-expiry" class="card-field" placeholder="MM/AA, Ej. 12/25" maxlength="5" required>
+            </div>
+            <div class="form-group">
+              <label for="card-cvc">Código de Seguridad</label>
+              <input type="text" id="card-cvc" name="card-cvc" class="card-field" placeholder="Ej. 123" maxlength="4" required>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- Sección 5: Políticas y Seguridad -->
+        <div class="policies">
+          <label>
+            <input type="checkbox" id="terms-checkbox" name="terms-checkbox" required>
+            Acepto los <a href="#" id="terms-link">Términos y Condiciones</a>
+          </label>
+          <label>
+            <input type="checkbox" id="privacy-checkbox" name="privacy-checkbox" required>
+            Acepto la <a href="#" id="privacy-link">Política de Privacidad</a>
+          </label>
+          <p>Tu información está segura con nosotros. Usamos protocolos de seguridad avanzados para proteger tus datos personales y financieros.</p>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submit-btn" disabled>Crear Cuenta</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal for Terms and Conditions -->
+  <div class="modal" id="terms-modal">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Cerrar">&times;</button>
+      <h2>Términos y Condiciones</h2>
+      <p><strong>Aceptación de los Términos y Condiciones</strong></p>
+      <p>Al seleccionar la opción "Acepto los Términos y Condiciones", usted confirma que ha leído, comprendido y acepta regirse por los Términos y Condiciones establecidos por STORE VERCEL, una compañía con seis años de experiencia en la importación y comercialización de productos Apple 100% originales. Este acuerdo regula el uso de nuestro sitio web, plataformas digitales, servicios asociados y la adquisición de productos tecnológicos importados directamente por nuestra empresa, garantizando autenticidad, calidad y confianza en cada transacción.</p>
+      <p>Los presentes Términos y Condiciones constituyen un contrato legalmente vinculante entre usted, en calidad de usuario o cliente, y STORE VERCEL. Al realizar una compra, ya sea a través de nuestra plataforma en línea, tiendas físicas o cualquier canal oficial, usted se compromete a cumplir con las disposiciones aquí establecidas, que incluyen, entre otros, las políticas de compra, métodos de pago, plazos y condiciones de entrega, garantías, devoluciones y responsabilidades derivadas del uso de nuestros productos.</p>
+      <p>Como importadora autorizada, STORE VERCEL asegura que todos los productos Apple comercializados cumplen con los estándares de calidad y autenticidad establecidos por el fabricante. Nos comprometemos a entregar los productos en las condiciones acordadas, utilizando nuestros servicios logísticos propios o socios estratégicos de confianza. Para envíos internacionales, ofrecemos opciones como transporte marítimo, garantizando que los productos lleguen al puerto designado o a la dirección especificada de manera segura y en los plazos establecidos.</p>
+      <p>Nos reservamos el derecho de modificar o actualizar estos Términos y Condiciones en cualquier momento para reflejar cambios en la legislación, mejoras en nuestros procesos o adaptaciones a nuevas necesidades comerciales. Cualquier modificación será comunicada a través de nuestro sitio web, correo electrónico u otros canales oficiales, y el uso continuado de nuestros servicios implicará la aceptación de dichos cambios. Le recomendamos revisar periódicamente este documento para mantenerse informado.</p>
+      <p>En caso de no estar de acuerdo con alguna de las disposiciones aquí establecidas, le solicitamos abstenerse de utilizar nuestros servicios o realizar compras en nuestra plataforma. Para consultas, aclaraciones o soporte, puede contactarnos a través de nuestros canales oficiales de atención al cliente, disponibles en nuestro sitio web.</p>
+    </div>
+  </div>
+
+  <!-- Modal for Privacy Policy -->
+  <div class="modal" id="privacy-modal">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Cerrar">&times;</button>
+      <h2>Política de Privacidad</h2>
+      <p><strong>Aceptación de la Política de Privacidad</strong></p>
+      <p>Al seleccionar la opción "Acepto la Política de Privacidad", usted confirma que ha leído, comprendido y acepta las prácticas descritas en la Política de Privacidad de STORE VERCEL, una compañía con seis años de trayectoria en la importación y venta de productos Apple originales, comprometida con la protección y el manejo responsable de los datos personales de sus clientes y usuarios.</p>
+      <p>En STORE VERCEL, reconocemos la importancia de salvaguardar su información personal y nos comprometemos a cumplir con las leyes y regulaciones vigentes en materia de protección de datos. Nuestra Política de Privacidad detalla cómo recopilamos, procesamos, almacenamos y protegemos su información personal, incluyendo datos proporcionados al registrarse en nuestro sitio web, realizar una compra, solicitar información o interactuar con nuestros servicios, ya sea en línea o en nuestras tiendas físicas.</p>
+      <p>Los datos recopilados, como su nombre, dirección, correo electrónico, número de teléfono y detalles de pago, se utilizan exclusivamente para procesar sus pedidos, gestionar entregas (incluyendo envíos marítimos a puertos designados), ofrecer soporte al cliente, personalizar su experiencia y, en caso de que así lo autorice, enviarle comunicaciones comerciales sobre productos, promociones o servicios relacionados. Garantizamos que su información no será compartida con terceros, salvo con socios logísticos o proveedores de servicios estrictamente necesarios para cumplir con nuestras obligaciones contractuales, y siempre bajo acuerdos que aseguren la confidencialidad.</p>
+      <p>Implementamos medidas de seguridad técnicas y organizativas para proteger sus datos contra accesos no autorizados, pérdidas o alteraciones. Además, usted tiene derecho a acceder, rectificar, actualizar o solicitar la eliminación de sus datos personales en cualquier momento, conforme a la normativa aplicable, contactándonos a través de nuestros canales oficiales.</p>
+      <p>Nos reservamos el derecho de actualizar esta Política de Privacidad para adaptarnos a cambios legales, regulatorios o mejoras en nuestras prácticas de manejo de datos. Cualquier cambio será notificado a través de nuestro sitio web o por correo electrónico, y el uso continuado de nuestros servicios implicará la aceptación de dichas actualizaciones. Le recomendamos revisar este documento periódicamente.</p>
+      <p>Si no está de acuerdo con las prácticas descritas en esta Política de Privacidad, le pedimos abstenerse de utilizar nuestros servicios o proporcionar su información personal. Para cualquier duda o solicitud relacionada con sus datos, nuestro equipo de atención al cliente está disponible a través de los canales oficiales indicados en nuestro sitio web.</p>
+    </div>
+  </div>
+
+  <script src="/static/main.js"></script>
+</body>
+</html>
