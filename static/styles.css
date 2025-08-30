@@ -19,36 +19,28 @@ body {
   filter: blur(5px);
 }
 
-/* Header container */
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 15px;
-  background-color: #fff;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
 /* Logo styles */
 .logo {
+  position: fixed;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
   height: 40px;
-  margin: 0 10px;
+  z-index: 1000;
 }
 
 /* Menú hamburguesa */
 .hamburger {
+  position: fixed;
+  top: 15px;
+  left: 15px;
   width: 40px;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  position: relative;
+  z-index: 1000;
 }
 
 .hamburger__container {
@@ -101,13 +93,13 @@ body {
 /* Menú compacto */
 .menu {
   position: fixed;
-  top: 60px;
+  top: 0;
   left: -100%;
   width: 180px;
   height: auto;
   background-color: rgba(255, 255, 255, 0.95);
   transition: left 0.3s ease;
-  padding: 20px;
+  padding: 60px 20px 20px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   z-index: 999;
   border-radius: 0 10px 10px 0;
@@ -142,9 +134,12 @@ body {
 
 /* Botones de usuario y carrito */
 .top-right-buttons {
+  position: fixed;
+  top: 15px;
+  right: 15px;
   display: flex;
   gap: 10px;
-  position: relative;
+  z-index: 1000;
 }
 
 .top-right-buttons button {
@@ -175,7 +170,7 @@ body {
   grid-template-columns: 1fr;
   gap: 10px;
   padding: 15px;
-  margin-top: 80px;
+  margin-top: 60px; /* Ajustado para dejar espacio al logo y elementos fijos */
 }
 
 .tile {
@@ -508,22 +503,38 @@ footer a:hover {
     display: none;
   }
 
+  .logo {
+    top: 10px; /* Ajustado para mejor alineación */
+    height: 50px; /* Ligeramente más grande en pantallas grandes */
+  }
+
   .menu {
-    position: static;
-    width: auto;
-    height: auto;
-    background: none;
-    padding: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #fff;
+    padding: 0 20px;
     display: flex;
-    box-shadow: none;
-    border-radius: 0;
-    flex-grow: 1;
     justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    border-radius: 0;
+  }
+
+  .menu.active {
+    left: 0; /* No es necesario cambiar, pero mantenido por compatibilidad */
   }
 
   .menu ul {
     display: flex;
     align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 600px; /* Limita el ancho del menú para mejor estética */
   }
 
   .menu ul li {
@@ -533,11 +544,12 @@ footer a:hover {
   .tiles {
     grid-template-columns: repeat(2, 1fr);
     padding: 20px;
-    margin-top: 80px;
+    margin-top: 80px; /* Ajustado para dejar espacio al menú y logo */
   }
 
   .top-right-buttons {
-    position: relative;
+    top: 10px;
+    right: 20px;
   }
 
   .description {
@@ -556,23 +568,5 @@ footer a:hover {
 
   .modal-content h2 {
     font-size: 24px;
-  }
-
-  /* Ajustar el header para pantallas grandes */
-  .header {
-    padding: 10px 20px;
-  }
-
-  .logo {
-    order: 1;
-    margin: 0 20px;
-  }
-
-  .menu {
-    order: 2;
-  }
-
-  .top-right-buttons {
-    order: 3;
   }
 }
