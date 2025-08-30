@@ -474,9 +474,9 @@ document.addEventListener('DOMContentLoaded', () => {
               <button class="close-btn">&times;</button>
               <p>Ups... hubo un error al cargar el formulario. Estamos trabajando para solucionarlo. Volvé a intentarlo en unos minutos.</p>
               <ul>
-                <li>📧 <strong>Gmail:</strong> storevercel@gmail.com</li>
-                <li>📸 <strong>Instagram:</strong> <a href="https://instagram.com/storevercel" target="_blank">@storevercel</a></li>
-                <li>📱 <strong>WhatsApp:</strong> <a href="https://wa.me/5492616258478" target="_blank">+54 9 261 6258478</a></li>
+                <li><i class="fas fa-envelope"></i> <strong>Gmail:</strong> storevercel@gmail.com</li>
+                <li><i class="fab fa-instagram"></i> <strong>Instagram:</strong> <a href="https://instagram.com/storevercel" target="_blank">@storevercel</a></li>
+                <li><i class="fab fa-whatsapp"></i> <strong>WhatsApp:</strong> <a href="https://wa.me/5492616258478" target="_blank">WhatsApp</a></li>
               </ul>
             </div>
           `;
@@ -496,9 +496,9 @@ document.addEventListener('DOMContentLoaded', () => {
               <button class="close-btn">&times;</button>
               <p>Ups... hubo un error al cargar el formulario. Estamos trabajando para solucionarlo. Volvé a intentarlo en unos minutos.</p>
               <ul>
-                <li>📧 <strong>Gmail:</strong> storevercel@gmail.com</li>
-                <li>📸 <strong>Instagram:</strong> <a href="https://instagram.com/storevercel" target="_blank">@storevercel</a></li>
-                <li>📱 <strong>WhatsApp:</strong> <a href="https://wa.me/5492616258478" target="_blank">+54 9 261 6258478</a></li>
+                <li><i class="fas fa-envelope"></i> <strong>Gmail:</strong> storevercel@gmail.com</li>
+                <li><i class="fab fa-instagram"></i> <strong>Instagram:</strong> <a href="https://instagram.com/storevercel" target="_blank">@storevercel</a></li>
+                <li><i class="fab fa-whatsapp"></i> <strong>WhatsApp:</strong> <a href="https://wa.me/5492616258478" target="_blank">WhatsApp</a></li>
               </ul>
             </div>
           `;
