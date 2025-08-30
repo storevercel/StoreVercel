@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const thumbElements = document.querySelectorAll(`#${modalId} .thumb-color`);
     const modelThumbnails = thumbnails[model] || [];
 
-    if (modelThumbnails.length > 0) {
+    if (modelThumbnails.length > 0 && mainImage) {
       mainImage.style.backgroundImage = `url(${modelThumbnails[0]})`;
       mainImage.dataset.url = modelThumbnails[0];
       thumbElements.forEach((thumb, index) => {
@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.querySelector(`#${modalId}`);
     if (modal) {
       modal.classList.add('active');
-      contentWrapper.classList.add('blurred');
+      if (contentWrapper) contentWrapper.classList.add('blurred');
       initializeModalImages(modalId, model);
       const defaultMemory = document.querySelector(`#${modalId} .memory-btn`)?.dataset.memory || '256GB';
       updatePrice(modalId, model, defaultMemory);
@@ -265,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Función para cerrar modales
   function closeModal() {
     document.querySelectorAll('.modal').forEach(modal => modal.classList.remove('active'));
-    contentWrapper.classList.remove('blurred');
+    if (contentWrapper) contentWrapper.classList.remove('blurred');
   }
 
   // Evento para abrir modales de productos
@@ -410,24 +410,37 @@ document.addEventListener('DOMContentLoaded', () => {
   // Evento para habilitar/deshabilitar el botón de Crear Cuenta
   if (termsCheckbox && privacyCheckbox && submitBtn) {
     const updateSubmitButton = () => {
+      console.log('Checkbox state:', {
+        termsChecked: termsCheckbox.checked,
+        privacyChecked: privacyCheckbox.checked
+      });
       if (termsCheckbox.checked && privacyCheckbox.checked) {
         submitBtn.classList.add('enabled');
         submitBtn.disabled = false;
+        console.log('Submit button enabled');
       } else {
         submitBtn.classList.remove('enabled');
         submitBtn.disabled = true;
+        console.log('Submit button disabled');
       }
     };
 
     termsCheckbox.addEventListener('change', updateSubmitButton);
     privacyCheckbox.addEventListener('change', updateSubmitButton);
     updateSubmitButton(); // Verificar estado inicial
+  } else {
+    console.log('One or more elements not found:', {
+      termsCheckbox: !!termsCheckbox,
+      privacyCheckbox: !!privacyCheckbox,
+      submitBtn: !!submitBtn
+    });
   }
 
   // Evento para el formulario de registro
   if (submitBtn) {
     submitBtn.addEventListener('click', (e) => {
       e.preventDefault();
+      console.log('Submit button clicked');
       const form = document.querySelector('#register-form');
       
       // Crear y mostrar modal de carga
@@ -445,8 +458,12 @@ document.addEventListener('DOMContentLoaded', () => {
         method: 'POST',
         body: new FormData(form)
       })
-      .then(response => response.json())
+      .then(response => {
+        console.log('Fetch response:', response);
+        return response.json();
+      })
       .then(data => {
+        console.log('Fetch data:', data);
         // Esperar 3 segundos antes de mostrar el modal de error
         setTimeout(() => {
           loadingModal.remove();
@@ -468,6 +485,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
       })
       .catch(error => {
+        console.error('Fetch error:', error);
         // En caso de error en la solicitud, también esperar 3 segundos
         setTimeout(() => {
           loadingModal.remove();
@@ -495,7 +513,7 @@ document.addEventListener('DOMContentLoaded', () => {
   iphoneItems.forEach(item => {
     const model = item.dataset.model;
     const img = item.querySelector('.iphone-color');
-    if (catalogImages[model]) {
+    if (catalogImages[model] && img) {
       img.style.backgroundImage = `url(${catalogImages[model]})`;
       img.dataset.url = catalogImages[model];
     }
