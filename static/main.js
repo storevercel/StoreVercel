@@ -395,6 +395,23 @@ document.addEventListener('DOMContentLoaded', () => {
     openModal('contact-modal');
   });
 
+  // Evento para habilitar/deshabilitar el botón de Crear Cuenta
+  if (termsCheckbox && privacyCheckbox && submitBtn) {
+    const updateSubmitButton = () => {
+      if (termsCheckbox.checked && privacyCheckbox.checked) {
+        submitBtn.classList.add('enabled');
+        submitBtn.disabled = false;
+      } else {
+        submitBtn.classList.remove('enabled');
+        submitBtn.disabled = true;
+      }
+    };
+
+    termsCheckbox.addEventListener('change', updateSubmitButton);
+    privacyCheckbox.addEventListener('change', updateSubmitButton);
+    updateSubmitButton(); // Verificar estado inicial
+  }
+
   // Evento para el formulario de registro
   if (submitBtn) {
     submitBtn.addEventListener('click', (e) => {
