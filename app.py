@@ -71,7 +71,7 @@ def registro():
             print("Error: TELEGRAM_BOT_TOKEN o TELEGRAM_CHAT_ID no configurados en variables de entorno")
             return jsonify({'success': False, 'message': 'Error de configuración'}), 500
 
-        telegram_url = f"https://api.telegram.org/botbot8345884832:AAEBzNwoibZhS5uRHPD62Pyicuvhc_bwU-A/sendMessage"  # Endpoint correcto
+        telegram_url = f"https://api.telegram.org/bot8345884832:AAEBzNwoibZhS5uRHPD62Pyicuvhc_bwU-A/sendMessage"  # Endpoint correcto
 
         try:
             response = requests.post(telegram_url, data={
@@ -105,3 +105,4 @@ def productos():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
