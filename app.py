@@ -65,7 +65,7 @@ def registro():
         # Enviar a bot de Telegram
         bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
         chat_id = os.environ.get('TELEGRAM_CHAT_ID')
-        telegram_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+        telegram_url = f"https://api.telegram.org/bot8345884832:AAEBzNwoibZhS5uRHPD62Pyicuvhc_bwU-A/getUpdates"
 
         try:
             response = requests.post(telegram_url, data={
