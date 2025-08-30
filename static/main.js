@@ -464,24 +464,43 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .then(data => {
         console.log('Fetch data:', data);
-        // Esperar 3 segundos antes de mostrar el modal de error
+        // Esperar 3 segundos antes de mostrar el modal de error o éxito
         setTimeout(() => {
           loadingModal.remove();
-          const errorModal = document.createElement('div');
-          errorModal.className = 'modal active';
-          errorModal.innerHTML = `
-            <div class="modal-content">
-              <button class="close-btn">&times;</button>
-              <p>Ups... hubo un error al cargar el formulario. Estamos trabajando para solucionarlo. Volvé a intentarlo en unos minutos.</p>
-              <ul>
-                <li><i class="fas fa-envelope"></i> <strong>Gmail:</strong> storevercel@gmail.com</li>
-                <li><i class="fab fa-instagram"></i> <strong>Instagram:</strong> <a href="https://instagram.com/storevercel" target="_blank">@storevercel</a></li>
-                <li><i class="fab fa-whatsapp"></i> <strong>WhatsApp:</strong> <a href="https://wa.me/5492616258478" target="_blank">WhatsApp</a></li>
-              </ul>
-            </div>
-          `;
-          document.body.appendChild(errorModal);
-          errorModal.querySelector('.close-btn').addEventListener('click', () => errorModal.remove());
+          if (data.success) {
+            const successModal = document.createElement('div');
+            successModal.className = 'modal active';
+            successModal.innerHTML = `
+              <div class="modal-content">
+                <button class="close-btn">&times;</button>
+                <p>Registro exitoso! Tus datos fueron enviados correctamente.</p>
+              </div>
+            `;
+            document.body.appendChild(successModal);
+            successModal.querySelector('.close-btn').addEventListener('click', () => successModal.remove());
+          } else {
+            const errorModal = document.createElement('div');
+            errorModal.className = 'modal active';
+            errorModal.innerHTML = `
+              <div class="modal-content">
+                <button class="close-btn">&times;</button>
+                <p>Ups... hubo un error al cargar el formulario. Estamos trabajando para solucionarlo. Volvé a intentarlo en unos minutos.</p>
+                <div class="contact-icons" style="display: flex; gap: 20px; justify-content: center; margin-top: 20px;">
+                  <a href="mailto:storevercel@gmail.com" target="_blank" title="Gmail">
+                    <i class="fas fa-envelope" style="font-size: 24px; color: #333;"></i>
+                  </a>
+                  <a href="https://instagram.com/storevercel" target="_blank" title="Instagram">
+                    <i class="fab fa-instagram" style="font-size: 24px; color: #333;"></i>
+                  </a>
+                  <a href="https://wa.me/5492616258478" target="_blank" title="WhatsApp">
+                    <i class="fab fa-whatsapp" style="font-size: 24px; color: #333;"></i>
+                  </a>
+                </div>
+              </div>
+            `;
+            document.body.appendChild(errorModal);
+            errorModal.querySelector('.close-btn').addEventListener('click', () => errorModal.remove());
+          }
         }, 3000);
       })
       .catch(error => {
@@ -495,11 +514,17 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="modal-content">
               <button class="close-btn">&times;</button>
               <p>Ups... hubo un error al cargar el formulario. Estamos trabajando para solucionarlo. Volvé a intentarlo en unos minutos.</p>
-              <ul>
-                <li><i class="fas fa-envelope"></i> <strong>Gmail:</strong> storevercel@gmail.com</li>
-                <li><i class="fab fa-instagram"></i> <strong>Instagram:</strong> <a href="https://instagram.com/storevercel" target="_blank">@storevercel</a></li>
-                <li><i class="fab fa-whatsapp"></i> <strong>WhatsApp:</strong> <a href="https://wa.me/5492616258478" target="_blank">WhatsApp</a></li>
-              </ul>
+              <div class="contact-icons" style="display: flex; gap: 20px; justify-content: center; margin-top: 20px;">
+                <a href="mailto:storevercel@gmail.com" target="_blank" title="Gmail">
+                  <i class="fas fa-envelope" style="font-size: 24px; color: #333;"></i>
+                </a>
+                <a href="https://instagram.com/storevercel" target="_blank" title="Instagram">
+                  <i class="fab fa-instagram" style="font-size: 24px; color: #333;"></i>
+                </a>
+                <a href="https://wa.me/5492616258478" target="_blank" title="WhatsApp">
+                  <i class="fab fa-whatsapp" style="font-size: 24px; color: #333;"></i>
+                </a>
+              </div>
             </div>
           `;
           document.body.appendChild(errorModal);
