@@ -164,27 +164,24 @@ body {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-/* Catalog container */
-.catalog-container {
-  margin-top: 80px; /* Aumentado para dejar espacio al logo y elementos fijos */
-  padding: 15px;
-}
-
 /* Estilos para los títulos */
-h1 {
-  font-size: 18px; /* Reducido para "Elige tu iPhone" */
+.section-title {
+  font-size: 1.5rem; /* Reducido desde 2rem (32px) a 24px */
   font-weight: 600;
-  color: #000;
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-h2 {
-  font-size: 16px; /* Reducido para "Tecnología Apple" */
-  font-weight: 500;
   color: #333;
   text-align: center;
-  margin-bottom: 15px;
+  margin: 4rem 0 2rem; /* Aumentado margin-top a 4rem (64px) para bajar el título */
+}
+
+/* Estilos para el contenedor de secciones */
+.container.my-5 {
+  margin-top: 5rem; /* Aumentado desde 3rem (Bootstrap) para bajar todo el contenido */
+}
+
+/* Catalog container */
+.catalog-container {
+  margin-top: 0; /* Eliminado margin-top adicional, ya que .container.my-5 lo maneja */
+  padding: 15px;
 }
 
 /* Sección de tiles */
@@ -502,4 +499,103 @@ footer a:hover {
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 15px;
-  margin-top: 20
+  margin-top: 20px;
+}
+
+.register-form legend {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  padding: 0 5px;
+}
+
+/* Responsividad para celulares en orientación horizontal */
+@media (min-width: 667px) and (max-width: 896px) and (orientation: landscape) {
+  .tiles {
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+}
+
+/* Para pantallas más grandes */
+@media (min-width: 768px) {
+  .hamburger {
+    display: none;
+  }
+
+  .logo {
+    top: 10px;
+    height: 50px;
+  }
+
+  .menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #fff;
+    padding: 0 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    border-radius: 0;
+  }
+
+  .menu.active {
+    left: 0;
+  }
+
+  .menu ul {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 600px;
+  }
+
+  .menu ul li {
+    padding: 10px 15px;
+  }
+
+  .tiles {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 20px;
+    margin-top: 80px;
+  }
+
+  .container.my-5 {
+    margin-top: 6rem; /* Mayor espacio para el menú y logo */
+  }
+
+  .section-title {
+    font-size: 1.8rem; /* Ligeramente más grande en pantallas grandes */
+    margin: 5rem 0 2rem; /* Mayor margin-top para pantallas grandes */
+  }
+
+  .top-right-buttons {
+    top: 10px;
+    right: 20px;
+  }
+
+  .description {
+    max-width: 800px;
+    margin: 0 auto 20px;
+    padding: 30px;
+  }
+
+  .description h2 {
+    font-size: 24px;
+  }
+
+  .modal-content {
+    max-width: 600px;
+  }
+
+  .modal-content h2 {
+    font-size: 24px;
+  }
+}
