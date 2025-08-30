@@ -74,7 +74,7 @@ def registro():
             }), 500
 
         # Construir la URL correctamente usando el token de entorno
-        telegram_url = f"https://api.telegram.org/bot8345884832:AAEBzNwoibZhS5uRHPD62Pyicuvhc_bwU-A/sendMessage"
+        telegram_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
 
         try:
             response = requests.post(
@@ -120,3 +120,4 @@ def productos():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
