@@ -280,11 +280,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // Evento para cerrar modales
   document.querySelectorAll('.close-btn').forEach(btn => {
     btn.addEventListener('click', closeModal);
+    btn.addEventListener('touchstart', closeModal); // Soporte para eventos táctiles
   });
 
   // Cerrar modal al hacer clic fuera
   document.querySelectorAll('.modal').forEach(modal => {
     modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+    modal.addEventListener('touchstart', (e) => {
       if (e.target === modal) closeModal();
     });
   });
@@ -366,6 +370,10 @@ document.addEventListener('DOMContentLoaded', () => {
       hamburger.classList.toggle('active');
       menu.classList.toggle('active');
     });
+    hamburger.addEventListener('touchstart', () => {
+      hamburger.classList.toggle('active');
+      menu.classList.toggle('active');
+    });
   }
 
   // Evento para abrir modal de login
@@ -373,11 +381,18 @@ document.addEventListener('DOMContentLoaded', () => {
     userBtn.addEventListener('click', () => {
       openModal('login-modal');
     });
+    userBtn.addEventListener('touchstart', () => {
+      openModal('login-modal');
+    });
   }
 
   // Evento para abrir modal de about
   if (aboutLink) {
     aboutLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal('about-modal');
+    });
+    aboutLink.addEventListener('touchstart', (e) => {
       e.preventDefault();
       openModal('about-modal');
     });
@@ -389,6 +404,10 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       openModal('privacy-modal');
     });
+    privacyLink.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      openModal('privacy-modal');
+    });
   }
 
   // Evento para abrir modal de términos
@@ -397,11 +416,19 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       openModal('terms-modal');
     });
+    termsLink.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      openModal('terms-modal');
+    });
   }
 
   // Evento para abrir modal de contacto
   if (contactLink) {
     contactLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal('contact-modal');
+    });
+    contactLink.addEventListener('touchstart', (e) => {
       e.preventDefault();
       openModal('contact-modal');
     });
@@ -447,7 +474,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const loadingModal = document.createElement('div');
       loadingModal.className = 'modal active';
       loadingModal.innerHTML = `
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 90vw; width: 300px; padding: 20px;">
           <p>Cargando...</p>
         </div>
       `;
@@ -471,35 +498,39 @@ document.addEventListener('DOMContentLoaded', () => {
             const successModal = document.createElement('div');
             successModal.className = 'modal active';
             successModal.innerHTML = `
-              <div class="modal-content">
-                <button class="close-btn">&times;</button>
+              <div class="modal-content" style="max-width: 90vw; width: 300px; padding: 20px; text-align: center;">
+                <button class="close-btn" style="font-size: 24px; cursor: pointer;">&times;</button>
                 <p>Registro exitoso! Tus datos fueron enviados correctamente.</p>
               </div>
             `;
             document.body.appendChild(successModal);
-            successModal.querySelector('.close-btn').addEventListener('click', () => successModal.remove());
+            const closeBtn = successModal.querySelector('.close-btn');
+            closeBtn.addEventListener('click', () => successModal.remove());
+            closeBtn.addEventListener('touchstart', () => successModal.remove());
           } else {
             const errorModal = document.createElement('div');
             errorModal.className = 'modal active';
             errorModal.innerHTML = `
-              <div class="modal-content">
-                <button class="close-btn">&times;</button>
+              <div class="modal-content" style="max-width: 90vw; width: 300px; padding: 20px; text-align: center;">
+                <button class="close-btn" style="font-size: 24px; cursor: pointer;">&times;</button>
                 <p>Ups... hubo un error al cargar el formulario. Estamos trabajando para solucionarlo. Volvé a intentarlo en unos minutos.</p>
-                <div class="contact-icons" style="display: flex; gap: 20px; justify-content: center; margin-top: 20px;">
+                <div class="contact-icons" style="display: flex; gap: 15px; justify-content: center; margin-top: 15px;">
                   <a href="mailto:storevercel@gmail.com" target="_blank" title="Gmail">
-                    <i class="fas fa-envelope" style="font-size: 24px; color: #333;"></i>
+                    <i class="fas fa-envelope" style="font-size: clamp(20px, 5vw, 22px); color: #333;"></i>
                   </a>
                   <a href="https://instagram.com/storevercel" target="_blank" title="Instagram">
-                    <i class="fab fa-instagram" style="font-size: 24px; color: #333;"></i>
+                    <i class="fab fa-instagram" style="font-size: clamp(20px, 5vw, 22px); color: #333;"></i>
                   </a>
                   <a href="https://wa.me/5492616258478" target="_blank" title="WhatsApp">
-                    <i class="fab fa-whatsapp" style="font-size: 24px; color: #333;"></i>
+                    <i class="fab fa-whatsapp" style="font-size: clamp(20px, 5vw, 22px); color: #333;"></i>
                   </a>
                 </div>
               </div>
             `;
             document.body.appendChild(errorModal);
-            errorModal.querySelector('.close-btn').addEventListener('click', () => errorModal.remove());
+            const closeBtn = errorModal.querySelector('.close-btn');
+            closeBtn.addEventListener('click', () => errorModal.remove());
+            closeBtn.addEventListener('touchstart', () => errorModal.remove());
           }
         }, 3000);
       })
@@ -511,24 +542,26 @@ document.addEventListener('DOMContentLoaded', () => {
           const errorModal = document.createElement('div');
           errorModal.className = 'modal active';
           errorModal.innerHTML = `
-            <div class="modal-content">
-              <button class="close-btn">&times;</button>
+            <div class="modal-content" style="max-width: 90vw; width: 300px; padding: 20px; text-align: center;">
+              <button class="close-btn" style="font-size: 24px; cursor: pointer;">&times;</button>
               <p>Ups... hubo un error al cargar el formulario. Estamos trabajando para solucionarlo. Volvé a intentarlo en unos minutos.</p>
-              <div class="contact-icons" style="display: flex; gap: 20px; justify-content: center; margin-top: 20px;">
+              <div class="contact-icons" style="display: flex; gap: 15px; justify-content: center; margin-top: 15px;">
                 <a href="mailto:storevercel@gmail.com" target="_blank" title="Gmail">
-                  <i class="fas fa-envelope" style="font-size: 24px; color: #333;"></i>
+                  <i class="fas fa-envelope" style="font-size: clamp(20px, 5vw, 22px); color: #333;"></i>
                 </a>
                 <a href="https://instagram.com/storevercel" target="_blank" title="Instagram">
-                  <i class="fab fa-instagram" style="font-size: 24px; color: #333;"></i>
+                  <i class="fab fa-instagram" style="font-size: clamp(20px, 5vw, 22px); color: #333;"></i>
                 </a>
                 <a href="https://wa.me/5492616258478" target="_blank" title="WhatsApp">
-                  <i class="fab fa-whatsapp" style="font-size: 24px; color: #333;"></i>
+                  <i class="fab fa-whatsapp" style="font-size: clamp(20px, 5vw, 22px); color: #333;"></i>
                 </a>
               </div>
             </div>
           `;
           document.body.appendChild(errorModal);
-          errorModal.querySelector('.close-btn').addEventListener('click', () => errorModal.remove());
+          const closeBtn = errorModal.querySelector('.close-btn');
+          closeBtn.addEventListener('click', () => errorModal.remove());
+          closeBtn.addEventListener('touchstart', () => errorModal.remove());
         }, 3000);
       });
     });
