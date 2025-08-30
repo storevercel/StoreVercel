@@ -148,63 +148,63 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Imágenes para el catálogo
   const catalogImages = {
-    'iPhone 16': 'https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20pro2.png',
-    'iPhone 15': 'https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20pro2.png',
-    'iPhone 14': 'https://github.com/storevercel/imagenesstorevercel/blob/main/iphone133.png',
-    'iPhone 13': 'https://github.com/storevercel/imagenesstorevercel/blob/main/iphone133.png',
-    'Mac Studio': 'https://github.com/storevercel/imagenesstorevercel/blob/main/mac%20studio3.png',
-    'MacBook': 'https://github.com/storevercel/imagenesstorevercel/blob/main/macbook1.png',
-    'iPad': 'https://github.com/storevercel/imagenesstorevercel/blob/main/ipad%2011%20pro3.png',
-    'Apple Vision Pro': 'https://github.com/storevercel/imagenesstorevercel/blob/main/applevision.png',
-    'Apple Watch Ultra': 'https://github.com/storevercel/imagenesstorevercel/blob/main/apple%20wacht%20ultra3.png'
+    'iPhone 16': 'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/iphone%2016%20pro2.png',
+    'iPhone 15': 'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/iphone%2016%20pro2.png',
+    'iPhone 14': 'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/iphone133.png',
+    'iPhone 13': 'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/iphone133.png',
+    'Mac Studio': 'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/mac%20studio3.png',
+    'MacBook': 'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/macbook1.png',
+    'iPad': 'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/ipad%2011%20pro3.png',
+    'Apple Vision Pro': 'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/applevision.png',
+    'Apple Watch Ultra': 'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/apple%20wacht%20ultra3.png'
   };
 
   // Imágenes para las miniaturas en los modales
   const thumbnails = {
     'iPhone 16': [
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20pro.png',
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20pro1.png',
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20pro2.png'
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/iphone%2016%20pro.png',
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/iphone%2016%20pro1.png',
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/iphone%2016%20pro2.png'
     ],
     'iPhone 15': [
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20protr.png',
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20protr1.png',
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20pro2.png'
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/iphone%2016%20protr.png',
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/iphone%2016%20protr1.png',
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/iphone%2016%20pro2.png'
     ],
     'iPhone 14': [
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20prot.png',
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20prot1.png',
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/iphone%2016%20pro2.png'
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/iphone%2016%20prot.png',
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/iphone%2016%20prot1.png',
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/iphone%2016%20pro2.png'
     ],
     'iPhone 13': [
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/iphone13.png',
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/iphone131.png',
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/iphone133.png'
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/iphone13.png',
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/iphone131.png',
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/iphone133.png'
     ],
     'Mac Studio': [
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/mac%20studio2.png',
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/mac%20studio1.png',
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/mac%20studio.png'
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/mac%20studio2.png',
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/mac%20studio1.png',
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/mac%20studio.png'
     ],
     'MacBook': [
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/macbook%20m4.png',
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/macbook%20m41.png',
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/macbook%20m42.png'
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/macbook%20m4.png',
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/macbook%20m41.png',
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/macbook%20m42.png'
     ],
     'iPad': [
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/ipad%2011%20pro.png',
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/ipad%2011%20pro1.png',
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/ipad%2011%20pro2.png'
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/ipad%2011%20pro.png',
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/ipad%2011%20pro1.png',
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/ipad%2011%20pro2.png'
     ],
     'Apple Vision Pro': [
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/apple%20vision%20pro.png',
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/apple%20vision%20pro2.png',
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/apple%20vision%20pro3.png'
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/apple%20vision%20pro.png',
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/apple%20vision%20pro2.png',
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/apple%20vision%20pro3.png'
     ],
     'Apple Watch Ultra': [
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/apple%20wacht%20ultra.png',
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/apple%20wacht%20ultra11.png',
-      'https://github.com/storevercel/imagenesstorevercel/blob/main/apple%20wacht%20ultra22.png'
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/apple%20wacht%20ultra.png',
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/apple%20wacht%20ultra11.png',
+      'https://raw.githubusercontent.com/storevercel/imagenesstorevercel/main/apple%20wacht%20ultra22.png'
     ]
   };
 
@@ -361,39 +361,51 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Evento para menú hamburguesa
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    menu.classList.toggle('active');
-  });
+  if (hamburger && menu) {
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      menu.classList.toggle('active');
+    });
+  }
 
   // Evento para abrir modal de login
-  userBtn.addEventListener('click', () => {
-    openModal('login-modal');
-  });
+  if (userBtn) {
+    userBtn.addEventListener('click', () => {
+      openModal('login-modal');
+    });
+  }
 
   // Evento para abrir modal de about
-  aboutLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    openModal('about-modal');
-  });
+  if (aboutLink) {
+    aboutLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal('about-modal');
+    });
+  }
 
   // Evento para abrir modal de privacidad
-  privacyLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    openModal('privacy-modal');
-  });
+  if (privacyLink) {
+    privacyLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal('privacy-modal');
+    });
+  }
 
   // Evento para abrir modal de términos
-  termsLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    openModal('terms-modal');
-  });
+  if (termsLink) {
+    termsLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal('terms-modal');
+    });
+  }
 
   // Evento para abrir modal de contacto
-  contactLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    openModal('contact-modal');
-  });
+  if (contactLink) {
+    contactLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal('contact-modal');
+    });
+  }
 
   // Evento para habilitar/deshabilitar el botón de Crear Cuenta
   if (termsCheckbox && privacyCheckbox && submitBtn) {
