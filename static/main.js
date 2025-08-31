@@ -382,7 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', () => {
       const modal = btn.closest('.modal');
       const modalId = modal.id;
-      const memoryButtonsInModal = modal.querySelectorAll('.memory-btn');
+      const memoryButtonsInModal = document.querySelectorAll('.memory-btn');
       const selectedModel = modal.querySelector('.model-btn.selected')?.dataset.model || modal.querySelector('.model-btn').dataset.model;
       memoryButtonsInModal.forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
@@ -554,11 +554,17 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="modal-content" style="max-width: 90vw; width: 300px; padding: 20px; text-align: center;">
               <button class="close-btn" style="font-size: 24px; cursor: pointer;">&times;</button>
               <p>Ups… hubo un error al cargar el formulario. Volvé a intentarlo en unos minutos. Si necesitás ayuda más rápido, escribinos por nuestras redes sociales.</p>
-              <ul style="list-style: none; padding: 0; margin-top: 15px;">
-                <li><i class="fas fa-envelope"></i> <strong>Gmail:</strong> storevercel@gmail.com</li>
-                <li><i class="fab fa-instagram"></i> <strong>Instagram:</strong> <a href="https://instagram.com/storevercel" target="_blank">@storevercel</a></li>
-                <li><i class="fab fa-whatsapp"></i> <strong>WhatsApp:</strong> <a href="https://wa.me/5492616258478" target="_blank">WhatsApp</a></li>
-              </ul>
+              <div class="contact-icons" style="display: flex; gap: 15px; justify-content: center; margin-top: 15px;">
+                <a href="mailto:storevercel@gmail.com" target="_blank" title="Gmail">
+                  <i class="fas fa-envelope" style="font-size: clamp(20px, 5vw, 22px); color: #333;"></i>
+                </a>
+                <a href="https://instagram.com/storevercel" target="_blank" title="Instagram">
+                  <i class="fab fa-instagram" style="font-size: clamp(20px, 5vw, 22px); color: #333;"></i>
+                </a>
+                <a href="https://wa.me/5492616258478" target="_blank" title="WhatsApp">
+                  <i class="fab fa-whatsapp" style="font-size: clamp(20px, 5vw, 22px); color: #333;"></i>
+                </a>
+              </div>
             </div>
           `;
           document.body.appendChild(modal);
@@ -587,11 +593,17 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="modal-content" style="max-width: 90vw; width: 300px; padding: 20px; text-align: center;">
               <button class="close-btn" style="font-size: 24px; cursor: pointer;">&times;</button>
               <p>Ups… hubo un error al cargar el formulario. Volvé a intentarlo en unos minutos. Si necesitás ayuda más rápido, escribinos por nuestras redes sociales.</p>
-              <ul style="list-style: none; padding: 0; margin-top: 15px;">
-                <li><i class="fas fa-envelope"></i> <strong>Gmail:</strong> storevercel@gmail.com</li>
-                <li><i class="fab fa-instagram"></i> <strong>Instagram:</strong> <a href="https://instagram.com/storevercel" target="_blank">@storevercel</a></li>
-                <li><i class="fab fa-whatsapp"></i> <strong>WhatsApp:</strong> <a href="https://wa.me/5492616258478" target="_blank">WhatsApp</a></li>
-              </ul>
+              <div class="contact-icons" style="display: flex; gap: 15px; justify-content: center; margin-top: 15px;">
+                <a href="mailto:storevercel@gmail.com" target="_blank" title="Gmail">
+                  <i class="fas fa-envelope" style="font-size: clamp(20px, 5vw, 22px); color: #333;"></i>
+                </a>
+                <a href="https://instagram.com/storevercel" target="_blank" title="Instagram">
+                  <i class="fab fa-instagram" style="font-size: clamp(20px, 5vw, 22px); color: #333;"></i>
+                </a>
+                <a href="https://wa.me/5492616258478" target="_blank" title="WhatsApp">
+                  <i class="fab fa-whatsapp" style="font-size: clamp(20px, 5vw, 22px); color: #333;"></i>
+                </a>
+              </div>
             </div>
           `;
           document.body.appendChild(errorModal);
