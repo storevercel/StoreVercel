@@ -633,4 +633,16 @@ document.addEventListener('DOMContentLoaded', () => {
       img.dataset.url = catalogImages[model];
     }
   });
+
+  // Evitar salto al inicio al tocar los tiles en index.html
+  document.querySelectorAll('.tile').forEach(tile => {
+    const preventDefault = (e) => {
+      e.preventDefault();
+    };
+    if (isMobile) {
+      tile.addEventListener('touchstart', preventDefault);
+    } else {
+      tile.addEventListener('click', preventDefault);
+    }
+  });
 });
