@@ -273,16 +273,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Evento para abrir modales de productos
   iphoneItems.forEach(item => {
-    const openItemModal = (e) => {
-      e.preventDefault();
-      const modalId = item.dataset.modal;
-      const model = item.dataset.model;
-      openModal(modalId, model);
+    let touchStartX = 0;
+    let touchStartY = 0;
+    const threshold = 10; // Umbral en pixels para distinguir tap de swipe
+
+    const handleTouchStart = (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
     };
+
+    const handleTouchEnd = (e) => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const touchEndY = e.changedTouches[0].clientY;
+      const deltaX = Math.abs(touchEndX - touchStartX);
+      const deltaY = Math.abs(touchEndY - touchStartY);
+
+      if (deltaX < threshold && deltaY < threshold) {
+        // Es un tap, abrir modal
+        e.preventDefault();
+        const modalId = item.dataset.modal;
+        const model = item.dataset.model;
+        openModal(modalId, model);
+      } // Si no, es swipe, permitir scroll
+    };
+
     if (isMobile) {
-      item.addEventListener('touchstart', openItemModal);
+      item.addEventListener('touchstart', handleTouchStart);
+      item.addEventListener('touchend', handleTouchEnd);
     } else {
-      item.addEventListener('click', openItemModal);
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const modalId = item.dataset.modal;
+        const model = item.dataset.model;
+        openModal(modalId, model);
+      });
     }
   });
 
