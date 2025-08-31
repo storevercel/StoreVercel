@@ -28,6 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const optionCards = document.querySelectorAll('.option-card');
   const colorButtons = document.querySelectorAll('.color-btn');
 
+  // Detectar si es dispositivo móvil
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
   // Precios para todos los productos según modelo y memoria
   const prices = {
     'iPhone 16': {
@@ -270,27 +273,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Evento para abrir modales de productos
   iphoneItems.forEach(item => {
-    item.addEventListener('click', () => {
+    const openItemModal = (e) => {
+      e.preventDefault();
       const modalId = item.dataset.modal;
       const model = item.dataset.model;
       openModal(modalId, model);
-    });
+    };
+    if (isMobile) {
+      item.addEventListener('touchstart', openItemModal);
+    } else {
+      item.addEventListener('click', openItemModal);
+    }
   });
 
   // Evento para cerrar modales
   document.querySelectorAll('.close-btn').forEach(btn => {
-    btn.addEventListener('click', closeModal);
-    btn.addEventListener('touchstart', closeModal); // Soporte para eventos táctiles
+    const close = (e) => {
+      e.preventDefault();
+      closeModal();
+    };
+    if (isMobile) {
+      btn.addEventListener('touchstart', close);
+    } else {
+      btn.addEventListener('click', close);
+    }
   });
 
   // Cerrar modal al hacer clic fuera
   document.querySelectorAll('.modal').forEach(modal => {
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) closeModal();
-    });
-    modal.addEventListener('touchstart', (e) => {
-      if (e.target === modal) closeModal();
-    });
+    const closeOutside = (e) => {
+      if (e.target === modal) {
+        e.preventDefault();
+        closeModal();
+      }
+    };
+    if (isMobile) {
+      modal.addEventListener('touchstart', closeOutside);
+    } else {
+      modal.addEventListener('click', closeOutside);
+    }
   });
 
   // Evento para miniaturas
@@ -366,72 +387,81 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Evento para menú hamburguesa
   if (hamburger && menu) {
-    hamburger.addEventListener('click', () => {
+    const toggleMenu = (e) => {
+      e.preventDefault();
       hamburger.classList.toggle('active');
       menu.classList.toggle('active');
-    });
-    hamburger.addEventListener('touchstart', () => {
-      hamburger.classList.toggle('active');
-      menu.classList.toggle('active');
-    });
+    };
+    if (isMobile) {
+      hamburger.addEventListener('touchstart', toggleMenu);
+    } else {
+      hamburger.addEventListener('click', toggleMenu);
+    }
   }
 
   // Evento para abrir modal de login
   if (userBtn) {
-    userBtn.addEventListener('click', () => {
+    const openLoginModal = (e) => {
+      e.preventDefault();
       openModal('login-modal');
-    });
-    userBtn.addEventListener('touchstart', () => {
-      openModal('login-modal');
-    });
+    };
+    if (isMobile) {
+      userBtn.addEventListener('touchstart', openLoginModal);
+    } else {
+      userBtn.addEventListener('click', openLoginModal);
+    }
   }
 
   // Evento para abrir modal de about
   if (aboutLink) {
-    aboutLink.addEventListener('click', (e) => {
+    const openAboutModal = (e) => {
       e.preventDefault();
       openModal('about-modal');
-    });
-    aboutLink.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      openModal('about-modal');
-    });
+    };
+    if (isMobile) {
+      aboutLink.addEventListener('touchstart', openAboutModal);
+    } else {
+      aboutLink.addEventListener('click', openAboutModal);
+    }
   }
 
   // Evento para abrir modal de privacidad
   if (privacyLink) {
-    privacyLink.addEventListener('click', (e) => {
+    const openPrivacyModal = (e) => {
       e.preventDefault();
       openModal('privacy-modal');
-    });
-    privacyLink.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      openModal('privacy-modal');
-    });
+    };
+    if (isMobile) {
+      privacyLink.addEventListener('touchstart', openPrivacyModal);
+    } else {
+      privacyLink.addEventListener('click', openPrivacyModal);
+    }
   }
 
   // Evento para abrir modal de términos
   if (termsLink) {
-    termsLink.addEventListener('click', (e) => {
+    const openTermsModal = (e) => {
       e.preventDefault();
       openModal('terms-modal');
-    });
-    termsLink.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      openModal('terms-modal');
-    });
+    };
+    if (isMobile) {
+      termsLink.addEventListener('touchstart', openTermsModal);
+    } else {
+      termsLink.addEventListener('click', openTermsModal);
+    }
   }
 
   // Evento para abrir modal de contacto
   if (contactLink) {
-    contactLink.addEventListener('click', (e) => {
+    const openContactModal = (e) => {
       e.preventDefault();
       openModal('contact-modal');
-    });
-    contactLink.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      openModal('contact-modal');
-    });
+    };
+    if (isMobile) {
+      contactLink.addEventListener('touchstart', openContactModal);
+    } else {
+      contactLink.addEventListener('click', openContactModal);
+    }
   }
 
   // Evento para habilitar/deshabilitar el botón de Crear Cuenta
@@ -509,8 +539,17 @@ document.addEventListener('DOMContentLoaded', () => {
           `;
           document.body.appendChild(modal);
           const closeBtn = modal.querySelector('.close-btn');
-          closeBtn.addEventListener('click', () => modal.remove());
-          closeBtn.addEventListener('touchstart', () => modal.remove());
+          if (isMobile) {
+            closeBtn.addEventListener('touchstart', (e) => {
+              e.preventDefault();
+              modal.remove();
+            });
+          } else {
+            closeBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              modal.remove();
+            });
+          }
         }, 3000);
       })
       .catch(error => {
@@ -533,8 +572,17 @@ document.addEventListener('DOMContentLoaded', () => {
           `;
           document.body.appendChild(errorModal);
           const closeBtn = errorModal.querySelector('.close-btn');
-          closeBtn.addEventListener('click', () => errorModal.remove());
-          closeBtn.addEventListener('touchstart', () => errorModal.remove());
+          if (isMobile) {
+            closeBtn.addEventListener('touchstart', (e) => {
+              e.preventDefault();
+              errorModal.remove();
+            });
+          } else {
+            closeBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              errorModal.remove();
+            });
+          }
         }, 3000);
       });
     });
