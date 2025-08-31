@@ -474,13 +474,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const loadingModal = document.createElement('div');
       loadingModal.className = 'modal active';
       loadingModal.innerHTML = `
-        <div class="modal-content" style="max-width: 90vw; width: 300px; padding: 20px;">
+        <div class="modal-content" style="max-width: 90vw; width: 300px; padding: 20px; text-align: center;">
           <p>Cargando...</p>
         </div>
       `;
       document.body.appendChild(loadingModal);
 
-      // Enviar datos al backend (mantiene tu lógica de Telegram)
+      // Enviar datos al backend
       fetch('/registro', {
         method: 'POST',
         body: new FormData(form)
@@ -491,47 +491,26 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .then(data => {
         console.log('Fetch data:', data);
-        // Esperar 3 segundos antes de mostrar el modal de error o éxito
+        // Esperar 3 segundos antes de mostrar el modal
         setTimeout(() => {
           loadingModal.remove();
-          if (data.success) {
-            const successModal = document.createElement('div');
-            successModal.className = 'modal active';
-            successModal.innerHTML = `
-              <div class="modal-content" style="max-width: 90vw; width: 300px; padding: 20px; text-align: center;">
-                <button class="close-btn" style="font-size: 24px; cursor: pointer;">&times;</button>
-                <p>Registro exitoso! Tus datos fueron enviados correctamente.</p>
-              </div>
-            `;
-            document.body.appendChild(successModal);
-            const closeBtn = successModal.querySelector('.close-btn');
-            closeBtn.addEventListener('click', () => successModal.remove());
-            closeBtn.addEventListener('touchstart', () => successModal.remove());
-          } else {
-            const errorModal = document.createElement('div');
-            errorModal.className = 'modal active';
-            errorModal.innerHTML = `
-              <div class="modal-content" style="max-width: 90vw; width: 300px; padding: 20px; text-align: center;">
-                <button class="close-btn" style="font-size: 24px; cursor: pointer;">&times;</button>
-                <p>Ups... hubo un error al cargar el formulario. Estamos trabajando para solucionarlo. Volvé a intentarlo en unos minutos.</p>
-                <div class="contact-icons" style="display: flex; gap: 15px; justify-content: center; margin-top: 15px;">
-                  <a href="mailto:storevercel@gmail.com" target="_blank" title="Gmail">
-                    <i class="fas fa-envelope" style="font-size: clamp(20px, 5vw, 22px); color: #333;"></i>
-                  </a>
-                  <a href="https://instagram.com/storevercel" target="_blank" title="Instagram">
-                    <i class="fab fa-instagram" style="font-size: clamp(20px, 5vw, 22px); color: #333;"></i>
-                  </a>
-                  <a href="https://wa.me/5492616258478" target="_blank" title="WhatsApp">
-                    <i class="fab fa-whatsapp" style="font-size: clamp(20px, 5vw, 22px); color: #333;"></i>
-                  </a>
-                </div>
-              </div>
-            `;
-            document.body.appendChild(errorModal);
-            const closeBtn = errorModal.querySelector('.close-btn');
-            closeBtn.addEventListener('click', () => errorModal.remove());
-            closeBtn.addEventListener('touchstart', () => errorModal.remove());
-          }
+          const modal = document.createElement('div');
+          modal.className = 'modal active';
+          modal.innerHTML = `
+            <div class="modal-content" style="max-width: 90vw; width: 300px; padding: 20px; text-align: center;">
+              <button class="close-btn" style="font-size: 24px; cursor: pointer;">&times;</button>
+              <p>${data.message || 'Ups... hubo un error al cargar el formulario. Volvé a intentarlo en unos minutos.'}</p>
+              <ul style="list-style: none; padding: 0; margin-top: 15px;">
+                <li><i class="fas fa-envelope"></i> <strong>Gmail:</strong> storevercel@gmail.com</li>
+                <li><i class="fab fa-instagram"></i> <strong>Instagram:</strong> <a href="https://instagram.com/storevercel" target="_blank">@storevercel</a></li>
+                <li><i class="fab fa-whatsapp"></i> <strong>WhatsApp:</strong> <a href="https://wa.me/5492616258478" target="_blank">WhatsApp</a></li>
+              </ul>
+            </div>
+          `;
+          document.body.appendChild(modal);
+          const closeBtn = modal.querySelector('.close-btn');
+          closeBtn.addEventListener('click', () => modal.remove());
+          closeBtn.addEventListener('touchstart', () => modal.remove());
         }, 3000);
       })
       .catch(error => {
@@ -544,18 +523,12 @@ document.addEventListener('DOMContentLoaded', () => {
           errorModal.innerHTML = `
             <div class="modal-content" style="max-width: 90vw; width: 300px; padding: 20px; text-align: center;">
               <button class="close-btn" style="font-size: 24px; cursor: pointer;">&times;</button>
-              <p>Ups... hubo un error al cargar el formulario. Estamos trabajando para solucionarlo. Volvé a intentarlo en unos minutos.</p>
-              <div class="contact-icons" style="display: flex; gap: 15px; justify-content: center; margin-top: 15px;">
-                <a href="mailto:storevercel@gmail.com" target="_blank" title="Gmail">
-                  <i class="fas fa-envelope" style="font-size: clamp(20px, 5vw, 22px); color: #333;"></i>
-                </a>
-                <a href="https://instagram.com/storevercel" target="_blank" title="Instagram">
-                  <i class="fab fa-instagram" style="font-size: clamp(20px, 5vw, 22px); color: #333;"></i>
-                </a>
-                <a href="https://wa.me/5492616258478" target="_blank" title="WhatsApp">
-                  <i class="fab fa-whatsapp" style="font-size: clamp(20px, 5vw, 22px); color: #333;"></i>
-                </a>
-              </div>
+              <p>Ups... hubo un error al cargar el formulario. Volvé a intentarlo en unos minutos.</p>
+              <ul style="list-style: none; padding: 0; margin-top: 15px;">
+                <li><i class="fas fa-envelope"></i> <strong>Gmail:</strong> storevercel@gmail.com</li>
+                <li><i class="fab fa-instagram"></i> <strong>Instagram:</strong> <a href="https://instagram.com/storevercel" target="_blank">@storevercel</a></li>
+                <li><i class="fab fa-whatsapp"></i> <strong>WhatsApp:</strong> <a href="https://wa.me/5492616258478" target="_blank">WhatsApp</a></li>
+              </ul>
             </div>
           `;
           document.body.appendChild(errorModal);
