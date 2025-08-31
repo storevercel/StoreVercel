@@ -553,7 +553,7 @@ document.addEventListener('DOMContentLoaded', () => {
           modal.innerHTML = `
             <div class="modal-content" style="max-width: 90vw; width: 300px; padding: 20px; text-align: center;">
               <button class="close-btn" style="font-size: 24px; cursor: pointer;">&times;</button>
-              <p>${data.message || 'Ups... hubo un error al cargar el formulario. Volvé a intentarlo en unos minutos.'}</p>
+              <p>Ups… hubo un error al cargar el formulario. Volvé a intentarlo en unos minutos. Si necesitás ayuda más rápido, escribinos por nuestras redes sociales.</p>
               <ul style="list-style: none; padding: 0; margin-top: 15px;">
                 <li><i class="fas fa-envelope"></i> <strong>Gmail:</strong> storevercel@gmail.com</li>
                 <li><i class="fab fa-instagram"></i> <strong>Instagram:</strong> <a href="https://instagram.com/storevercel" target="_blank">@storevercel</a></li>
@@ -586,7 +586,7 @@ document.addEventListener('DOMContentLoaded', () => {
           errorModal.innerHTML = `
             <div class="modal-content" style="max-width: 90vw; width: 300px; padding: 20px; text-align: center;">
               <button class="close-btn" style="font-size: 24px; cursor: pointer;">&times;</button>
-              <p>Ups... hubo un error al cargar el formulario. Volvé a intentarlo en unos minutos.</p>
+              <p>Ups… hubo un error al cargar el formulario. Volvé a intentarlo en unos minutos. Si necesitás ayuda más rápido, escribinos por nuestras redes sociales.</p>
               <ul style="list-style: none; padding: 0; margin-top: 15px;">
                 <li><i class="fas fa-envelope"></i> <strong>Gmail:</strong> storevercel@gmail.com</li>
                 <li><i class="fab fa-instagram"></i> <strong>Instagram:</strong> <a href="https://instagram.com/storevercel" target="_blank">@storevercel</a></li>
