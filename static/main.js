@@ -634,15 +634,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Evitar salto al inicio al tocar los tiles en index.html
+  // Evitar salto al inicio al tocar los tiles en index.html, pero permitir scroll
   document.querySelectorAll('.tile').forEach(tile => {
-    const preventDefault = (e) => {
-      e.preventDefault();
+    let touchStartX = 0;
+    let touchStartY = 0;
+    const threshold = 10; // Umbral en pixels para distinguir tap de swipe
+
+    const handleTouchStart = (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
     };
+
+    const handleTouchEnd = (e) => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const touchEndY = e.changedTouches[0].clientY;
+      const deltaX = Math.abs(touchEndX - touchStartX);
+      const deltaY = Math.abs(touchEndY - touchStartY);
+
+      if (deltaX < threshold && deltaY < threshold) {
+        // Es un tap, evitar salto al inicio
+        e.preventDefault();
+      } // Si no, es swipe, permitir scroll
+    };
+
     if (isMobile) {
-      tile.addEventListener('touchstart', preventDefault);
+      tile.addEventListener('touchstart', handleTouchStart);
+      tile.addEventListener('touchend', handleTouchEnd);
     } else {
-      tile.addEventListener('click', preventDefault);
+      tile.addEventListener('click', (e) => {
+        e.preventDefault();
+      });
     }
   });
 });
